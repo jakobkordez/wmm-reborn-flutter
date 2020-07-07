@@ -1,8 +1,7 @@
-part of 'login_bloc.dart';
+part of 'login_cubit.dart';
 
+@immutable
 abstract class LoginState extends Equatable {
-  const LoginState();
-
   @override
   List<Object> get props => [];
 }
@@ -14,7 +13,7 @@ class LoginInProgress extends LoginState {}
 class LoginFailure extends LoginState {
   final String error;
 
-  const LoginFailure({@required this.error});
+  LoginFailure(this.error);
 
   @override
   List<Object> get props => [error];

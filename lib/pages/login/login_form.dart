@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
 
-import 'bloc/login_bloc.dart';
+import 'cubit/login_cubit.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -15,13 +15,12 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
-      BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-        username: _usernameController.text,
-        password: _passwordController.text,
-      ));
+      context.cubit<LoginCubit>().loginButtonPressed(
+          username: _usernameController.text,
+          password: _passwordController.text);
     }
 
-    return BlocListener<LoginBloc, LoginState>(
+    return CubitListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
           Scaffold.of(context).showSnackBar(
@@ -32,7 +31,7 @@ class _LoginFormState extends State<LoginForm> {
           );
         }
       },
-      child: BlocBuilder<LoginBloc, LoginState>(
+      child: CubitBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
           if (state is LoginInProgress) {
             return CircularProgressIndicator();
@@ -62,7 +61,9 @@ class _LoginFormState extends State<LoginForm> {
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).unfocus();
-                      _onLoginButtonPressed();
+                      if (_usernameController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty)
+                        _onLoginButtonPressed();
                     },
                     obscureText: true,
                   ),

@@ -4,6 +4,8 @@ import 'package:http/http.dart' show Response;
 import 'package:meta/meta.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'package:wmm_reborn_flutter/models/user.dart';
+
 import 'base_repository.dart';
 
 class UserRepository extends BaseRepository {
@@ -12,6 +14,7 @@ class UserRepository extends BaseRepository {
   @override
   String get baseUrl => super.baseUrl + '/users';
 
+  UserModel _currentUser;
   String _accessToken;
 
   Future<bool> authenticate(
@@ -51,6 +54,20 @@ class UserRepository extends BaseRepository {
     }
 
     return _accessToken = json.decode(res.body)['access_token'];
+  }
+
+  Future<UserModel> getCurrentUser({bool getNew = false}) async {
+    if (!getNew && _currentUser != null) return _currentUser;
+
+    Response res = await client.get(baseUrl + 'url',
+        headers: headers
+          ..['Authentication'] = 'Bearer ' + await getAccessToken());
+
+    if (res.statusCode != 200) {
+      throw UnauthorizedError();
+    }
+
+    return _currentUser = UserModel.fromJson(json.decode(res.body));
   }
 }
 

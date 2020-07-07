@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:provider/provider.dart';
 
-import 'package:wmm_reborn_flutter/bloc/auth_bloc.dart';
+import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
 import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
 
-import 'bloc/login_bloc.dart';
+import 'cubit/login_cubit.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
-  final UserRepository userRepository;
-
-  const LoginPage({Key key, @required this.userRepository}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +16,11 @@ class LoginPage extends StatelessWidget {
         title: const Text("Login"),
       ),
       body: Center(
-        child: BlocProvider<LoginBloc>(
-          create: (context) => LoginBloc(
-              userRepository: userRepository,
-              authBloc: BlocProvider.of<AuthBloc>(context)),
+        child: CubitProvider(
+          create: (context) => LoginCubit(
+            authCubit: context.cubit<AuthCubit>(),
+            userRepository: context.read<UserRepository>(),
+          ),
           child: LoginForm(),
         ),
       ),

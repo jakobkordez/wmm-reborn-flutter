@@ -1,15 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
+import 'package:wmm_reborn_flutter/components/basic_drawer.dart';
 
 import 'package:wmm_reborn_flutter/components/loan_list_child.dart';
 import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_reborn_flutter/cubit/loan_cubit.dart';
 import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
 
 import 'cubit/home_cubit.dart';
 import 'current_stats.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold)
+      context.cubit<LoanCubit>().loadMore();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CubitProvider<HomeCubit>(
@@ -18,25 +47,7 @@ class HomePage extends StatelessWidget {
         userRepository: context.read<UserRepository>(),
       ),
       child: Scaffold(
-        drawer: Drawer(
-          child: Container(
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.all(10),
-            child: SizedBox(
-              width: double.infinity,
-              child: FlatButton(
-                color: Colors.blue,
-                textColor: Colors.white,
-                disabledColor: Colors.grey,
-                disabledTextColor: Colors.black,
-                padding: EdgeInsets.all(8.0),
-                splashColor: Colors.blueAccent,
-                onPressed: () => context.cubit<AuthCubit>().logout(),
-                child: const Text("Logout"),
-              ),
-            ),
-          ),
-        ),
+        drawer: BasicDrawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => {},
           child: const Icon(Icons.add),
@@ -52,6 +63,7 @@ class HomePage extends StatelessWidget {
             builder: (context, state) {
               if (state is HomeLoaded) {
                 return CustomScrollView(
+                  controller: _scrollController,
                   slivers: <Widget>[
                     SliverAppBar(
                       pinned: true,
@@ -64,10 +76,28 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     SliverToBoxAdapter(child: Divider()),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                          (context, index) => LoanListChildWidget(),
-                          childCount: 10),
+                    CubitBuilder<LoanCubit, LoanState>(
+                      builder: (context, state) {
+                        if (state is LoanLoaded) {
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return index >= state.loans.length
+                                    ? Center(child: CircularProgressIndicator())
+                                    : LoanListChildWidget(
+                                        loan: state.loans[index],
+                                      );
+                              },
+                              childCount:
+                                  state.loans.length + (state.hasMore ? 1 : 0),
+                            ),
+                          );
+                        }
+
+                        return SliverToBoxAdapter(
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      },
                     ),
                   ],
                 );
@@ -76,9 +106,7 @@ class HomePage extends StatelessWidget {
               if (state is HomeInitial)
                 return Center(child: CircularProgressIndicator());
 
-              return Center(
-                child: const FlutterLogo(),
-              );
+              return Center(child: const FlutterLogo());
             },
           ),
         ),

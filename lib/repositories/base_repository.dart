@@ -38,7 +38,7 @@ class BaseRepository {
   Future<String> getAccessToken({bool getNew = false}) async {
     if (!getNew && _accessToken != null) return _accessToken;
 
-    String refreshToken = await _getToken();
+    String refreshToken = await getToken();
 
     Response res = await send('POST', '/users/token',
         body: {'refresh_token': refreshToken}, identify: false);
@@ -51,10 +51,10 @@ class BaseRepository {
   }
 
   Future<bool> hasToken() async {
-    return await _getToken() != null;
+    return await getToken() != null;
   }
 
-  Future<String> _getToken() {
+  Future<String> getToken() {
     return _storage.read(key: 'refresh_token');
   }
 

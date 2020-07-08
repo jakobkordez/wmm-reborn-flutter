@@ -25,9 +25,9 @@ class UserRepository {
       body: {'username': username, 'password': password},
     );
 
-    if (res.statusCode / 100 == 4) return false;
+    if (res.statusCode == 400) return false;
 
-    if (res.statusCode / 100 != 2) throw Error();
+    if (res.statusCode != 200) throw Error();
 
     await baseRepository.persistToken(json.decode(res.body)['refresh_token']);
 
@@ -35,7 +35,13 @@ class UserRepository {
   }
 
   Future<void> logout() async {
-    await baseRepository.deleteToken();
+    try {
+      final refreshToken = await baseRepository.getToken();
+      await baseRepository.send('DELETE', '$baseUrl/token',
+          body: {'refresh_token': refreshToken});
+    } finally {
+      await baseRepository.deleteToken();
+    }
   }
 
   Future<UserModel> getCurrentUser({bool getNew = false}) async {

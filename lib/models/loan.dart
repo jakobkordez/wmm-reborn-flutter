@@ -5,16 +5,18 @@ class LoanModel {
   String _creator;
   double _amount;
   DateTime _created;
-  DateTime _confirmed;
+  int _status;
+  DateTime _modified;
 
   LoanModel.fromJson(Map<String, dynamic> parsedJson) {
     _id = parsedJson['id'];
     _sender = parsedJson['sender'];
     _reciever = parsedJson['reciever'];
     _creator = parsedJson['creator'];
-    _amount = parsedJson['amount'];
-    _created = DateTime.parse(parsedJson['created']);
-    _confirmed = DateTime.parse(parsedJson['confirmed']);
+    _amount = parsedJson['amount'].toDouble();
+    _created = DateTime.tryParse(parsedJson['created']);
+    _status = parsedJson['status'];
+    _modified = DateTime.tryParse(parsedJson['modified'] ?? '');
   }
 
   int get id => _id;
@@ -23,5 +25,6 @@ class LoanModel {
   String get creator => _creator;
   double get amount => _amount;
   DateTime get created => _created;
-  DateTime get confirmed => _confirmed;
+  int get status => _status;
+  DateTime get modified => _modified;
 }

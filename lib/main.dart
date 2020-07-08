@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
+import 'package:wmm_reborn_flutter/cubit/loan_cubit.dart';
+import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
 
 import 'cubit/auth_cubit.dart';
 import 'pages/home/home_page.dart';
@@ -10,22 +12,29 @@ import 'repositories/base_repository.dart';
 import 'repositories/user_repository.dart';
 
 void main() {
-  BaseRepository baseRepository = BaseRepository();
-
   runApp(
     MultiProvider(
         providers: [
-          Provider<BaseRepository>(create: (context) => baseRepository),
+          Provider<BaseRepository>(create: (context) => BaseRepository()),
           Provider<UserRepository>(
             create: (context) => UserRepository(context.read<BaseRepository>()),
-          )
+          ),
+          Provider<LoanRepository>(
+            create: (context) => LoanRepository(context.read<BaseRepository>()),
+          ),
         ],
         child: MultiCubitProvider(
           providers: [
-            CubitProvider(
+            CubitProvider<AuthCubit>(
               create: (context) => AuthCubit(
                 baseRepository: context.read<BaseRepository>(),
                 userRepository: context.read<UserRepository>(),
+              ),
+            ),
+            CubitProvider<LoanCubit>(
+              create: (context) => LoanCubit(
+                authCubit: context.cubit<AuthCubit>(),
+                loanRepository: context.read<LoanRepository>(),
               ),
             ),
           ],

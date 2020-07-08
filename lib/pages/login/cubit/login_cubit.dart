@@ -23,8 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginInProgress());
 
     try {
-      if (await userRepository.authenticate(
-          username: username, password: password)) {
+      if (await userRepository.login(username: username, password: password)) {
         authCubit.login();
         emit(LoginInitial());
       } else

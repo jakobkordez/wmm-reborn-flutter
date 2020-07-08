@@ -9,10 +9,10 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> parsedJson) {
     _username = parsedJson['username'];
     _name = parsedJson['name'];
-    _totalLent = parsedJson['total_lent'];
-    _totalBorrowed = parsedJson['total_borrowed'];
-    _currentLent = parsedJson['current_lent'];
-    _currentBorrowed = parsedJson['current_borrowed'];
+    _totalLent = parsedJson['total_lent'].toDouble();
+    _totalBorrowed = parsedJson['total_borrowed'].toDouble();
+    _currentLent = parsedJson['current_lent'].toDouble();
+    _currentBorrowed = parsedJson['current_borrowed'].toDouble();
   }
 
   String get username => _username;

@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
         title: const Text("Login"),
       ),
       body: Center(
-        child: CubitProvider(
+        child: CubitProvider<LoginCubit>(
           create: (context) => LoginCubit(
             authCubit: context.cubit<AuthCubit>(),
             userRepository: context.read<UserRepository>(),

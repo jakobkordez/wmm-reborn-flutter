@@ -6,6 +6,7 @@ import 'package:wmm_reborn_flutter/components/basic_drawer.dart';
 import 'package:wmm_reborn_flutter/components/loan_list_child.dart';
 import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
 import 'package:wmm_reborn_flutter/cubit/loan_cubit.dart';
+import 'package:wmm_reborn_flutter/pages/create_loan/create_loan_page.dart';
 import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
 
 import 'cubit/home_cubit.dart';
@@ -49,7 +50,11 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         drawer: BasicDrawer(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => {},
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CreateLoanPage(),
+              )),
           child: const Icon(Icons.add),
         ),
         body: CubitListener<HomeCubit, HomeState>(
@@ -75,7 +80,6 @@ class _HomePageState extends State<HomePage> {
                         user: state.user,
                       ),
                     ),
-                    SliverToBoxAdapter(child: Divider()),
                     CubitBuilder<LoanCubit, LoanState>(
                       builder: (context, state) {
                         if (state is LoanLoaded) {

@@ -10,19 +10,26 @@ class CurrentStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.all(20),
+    return Card(
+      margin: EdgeInsets.all(0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10),
+          bottomRight: Radius.circular(10),
+        ),
+      ),
+      elevation: 2,
+      color: Theme.of(context).primaryColor,
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.all(15),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _Stats(
               title: 'You\'re owed',
               amount: user.currentLent,
               color: Colors.green,
-            ),
-            VerticalDivider(
-              width: 20,
-              thickness: 2,
             ),
             _Stats(
               title: 'You owe',
@@ -45,30 +52,26 @@ class _Stats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-        child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                amount.toStringAsFixed(2) + ' €',
-                style: TextStyle(
-                  color: color,
-                  fontSize: 28,
-                ),
-              )
-            ],
+    return Container(
+      padding: EdgeInsets.all(20),
+      alignment: Alignment.center,
+      child: Column(
+        children: <Widget>[
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+            ),
           ),
-        ),
+          Text(
+            amount.toStringAsFixed(2) + ' €',
+            style: TextStyle(
+              color: color,
+              fontSize: 28,
+            ),
+          )
+        ],
       ),
     );
   }

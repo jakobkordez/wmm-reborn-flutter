@@ -16,7 +16,7 @@ class LoanCubit extends Cubit<LoanState> {
     @required this.authCubit,
     @required this.loanRepository,
   }) : super(LoanInitial()) {
-    _loadInitial();
+    loadInitial();
   }
 
   final AuthCubit authCubit;
@@ -24,13 +24,18 @@ class LoanCubit extends Cubit<LoanState> {
 
   bool _loadingLock = false;
 
-  void _loadInitial() async {
+  void loadInitial() async {
     if (_loadingLock) return;
     _loadingLock = true;
 
-    final loans = await loanRepository.getAll(count: pageSize);
+    List<LoanModel> loans;
+    try {
+      loans = await loanRepository.getAll(count: pageSize);
 
-    emit(LoanLoaded(loans, loans.length == pageSize));
+      emit(LoanLoaded(loans, loans.length == pageSize));
+    } on Error {
+      emit(LoanLoadingFailure('Something went wrong! Try again later.'));
+    }
 
     _loadingLock = false;
   }
@@ -43,7 +48,7 @@ class LoanCubit extends Cubit<LoanState> {
     int lastIndex = 0;
     if (currState is LoanLoaded) {
       lastIndex = currState.loans.last.id;
-      emit(LoanLoaded(currState.loans.toList(), true));
+      emit(LoanLoaded(currState.loans.toList(), false));
     }
 
     _loadingLock = false;

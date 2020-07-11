@@ -26,4 +26,12 @@ class LoanRepository {
 
     return lList.map((e) => LoanModel.fromJson(e)).toList();
   }
+
+  Future<void> create(LoanModel loan) async {
+    Response res = await baseRepository.send('POST', baseUrl,
+      body: { 'user': loan.reciever, 'amount': loan.amount });
+    
+    if (res.statusCode == 400) throw ArgumentError(res.body.substring(1, res.body.length-1));
+    if (res.statusCode != 200) throw Error();
+  }
 }

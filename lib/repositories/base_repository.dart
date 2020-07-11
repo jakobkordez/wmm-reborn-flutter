@@ -14,7 +14,7 @@ class BaseRepository {
   Future<Response> send(
     String method,
     String path, {
-    Map<String, String> body,
+    Map<String, Object> body,
     bool identify = true,
   }) async {
     Request req = Request(method, Uri.parse('$_baseUrl$path'));

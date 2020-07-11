@@ -19,6 +19,8 @@ class LoanModel {
     _modified = DateTime.tryParse(parsedJson['modified'] ?? '');
   }
 
+  LoanModel();
+
   int get id => _id;
   String get sender => _sender;
   String get reciever => _reciever;

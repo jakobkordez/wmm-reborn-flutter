@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
-import 'package:wmm_reborn_flutter/cubit/loan_cubit.dart';
-import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
 
+import 'cubit/loan_cubit.dart';
+import 'repositories/loan_repository.dart';
 import 'cubit/auth_cubit.dart';
 import 'pages/home/home_page.dart';
 import 'pages/login/login_page.dart';

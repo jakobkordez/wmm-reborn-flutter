@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:provider/provider.dart';
+
 import 'package:wmm_reborn_flutter/pages/create_loan/cubit/create_loan_cubit.dart';
 import 'package:wmm_reborn_flutter/pages/create_loan/total_amount.dart';
+import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
 
 class CreateLoanPage extends StatefulWidget {
   @override
@@ -13,7 +16,9 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
   @override
   Widget build(BuildContext context) {
     return CubitProvider<CreateLoanCubit>(
-      create: (context) => CreateLoanCubit(),
+      create: (context) => CreateLoanCubit(
+        loanRepository: context.read<LoanRepository>(),
+      ),
       child: Scaffold(
         appBar: AppBar(title: const Text("New loan")),
         body: Form(

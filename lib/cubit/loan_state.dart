@@ -17,3 +17,12 @@ class LoanLoaded extends LoanState {
   @override
   List<Object> get props => [loans, hasMore];
 }
+
+class LoanLoadingFailure extends LoanState {
+  final String error;
+
+  LoanLoadingFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

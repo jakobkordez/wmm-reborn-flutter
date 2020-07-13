@@ -28,11 +28,14 @@ class BaseRepository {
 
     if (!identify || res.statusCode != 401) return res;
 
-    if (identify)
-      req.headers['Authorization'] =
-          'Bearer ${await getAccessToken(getNew: true)}';
+    req.headers['Authorization'] =
+        'Bearer ${await getAccessToken(getNew: true)}';
 
-    return Response.fromStream(await _client.send(req));
+    res = await Response.fromStream(await _client.send(req));
+
+    if (res.statusCode == 401) throw UnauthorizedError();
+
+    return res;
   }
 
   Future<String> getAccessToken({bool getNew = false}) async {

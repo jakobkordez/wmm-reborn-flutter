@@ -14,7 +14,7 @@ class UserRepository {
 
   String get baseUrl => '/users';
 
-  UserModel _currentUser;
+  Map<String, UserModel> _cachedUsers = {};
 
   Future<bool> login(
       {@required String username, @required String password}) async {
@@ -44,13 +44,19 @@ class UserRepository {
     }
   }
 
-  Future<UserModel> getCurrentUser({bool getNew = false}) async {
-    if (!getNew && _currentUser != null) return _currentUser;
+  Future<UserModel> getUser({bool getNew = false, String username = ''}) async {
+    if (!getNew && _cachedUsers[username] != null)
+      return _cachedUsers[username];
 
-    Response res = await baseRepository.send('GET', '$baseUrl/profile');
+    Response res =
+        await baseRepository.send('GET', '$baseUrl/profile/$username');
 
     if (res.statusCode != 200) throw Error();
 
-    return _currentUser = UserModel.fromJson(json.decode(res.body));
+    final user = UserModel.fromJson(json.decode(res.body));
+    _cachedUsers[user.username] = user;
+    if (username == '') _cachedUsers[''] = user;
+
+    return user;
   }
 }

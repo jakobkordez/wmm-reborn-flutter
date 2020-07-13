@@ -6,12 +6,10 @@ abstract class CreateLoanState extends Equatable {
   List<Object> get props => [];
 }
 
-class CreateLoanInitial extends CreateLoanState {}
-
-class CreateLoanChanged extends CreateLoanState {
+class CreateLoanInitial extends CreateLoanState {
   final List<LoanModel> loans;
 
-  CreateLoanChanged(this.loans);
+  CreateLoanInitial({this.loans = const <LoanModel>[]});
 
   @override
   List<Object> get props => [loans];
@@ -23,10 +21,9 @@ class CreateLoanSuccess extends CreateLoanState {}
 
 class CreateLoanFailure extends CreateLoanState {
   final String error;
-  final List<LoanModel> failedLoans;
 
-  CreateLoanFailure(this.error, this.failedLoans);
+  CreateLoanFailure(this.error);
 
   @override
-  List<Object> get props => [error, failedLoans];
+  List<Object> get props => [error];
 }

@@ -1,5 +1,6 @@
 import 'package:cubit/cubit.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
 import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
@@ -24,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeInitial());
 
     try {
-      UserModel user = await userRepository.getCurrentUser(getNew: true);
+      UserModel user = await userRepository.getUser(getNew: true);
       emit(HomeLoaded(user));
     } on UnauthorizedError {
       authCubit.logout();

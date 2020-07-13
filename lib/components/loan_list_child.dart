@@ -13,38 +13,48 @@ class LoanListChildWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: loan.status == 0
-          ? Colors.indigo[100]
-          : loan.status == -1 ? Colors.red[100] : Colors.white,
       child: Container(
-        padding: EdgeInsets.all(30),
+        padding: EdgeInsets.all(20),
         alignment: Alignment.center,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  loan.sender,
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  loan.reciever,
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    loan.sender,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    loan.reciever,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
             ),
-            Text(
-              loan.amount.toStringAsFixed(2) + ' €',
-              style: TextStyle(
-                  fontSize: 26,
-                  color: (context.cubit<HomeCubit>().state as HomeLoaded)
-                              .user
-                              .username ==
-                          loan.sender
-                      ? Colors.green
-                      : Colors.red),
+            if (loan.status == 0)
+              Text('Pending', style: TextStyle(color: Colors.amber[700]))
+            else if (loan.status == 1)
+              Text('Accepted', style: TextStyle(color: Colors.green))
+            else if (loan.status == -1)
+              Text('Declined', style: TextStyle(color: Colors.red)),
+            Expanded(
+              flex: 1,
+              child: Text(
+                loan.amount.toStringAsFixed(2) + ' €',
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                    fontSize: 22,
+                    color: (context.cubit<HomeCubit>().state as HomeLoaded)
+                                .user
+                                .username ==
+                            loan.sender
+                        ? Colors.green
+                        : Colors.red),
+              ),
             )
           ],
         ),

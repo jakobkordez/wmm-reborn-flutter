@@ -24,7 +24,7 @@ class LoanCubit extends Cubit<LoanState> {
 
   bool _loadingLock = false;
 
-  void loadInitial() async {
+  Future<void> loadInitial() async {
     if (_loadingLock) return;
     _loadingLock = true;
 

@@ -1,6 +1,5 @@
 part of 'create_loan_cubit.dart';
 
-@immutable
 abstract class CreateLoanState extends Equatable {
   @override
   List<Object> get props => [];

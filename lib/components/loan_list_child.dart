@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 import 'package:wmm_reborn_flutter/models/loan.dart';
-import 'package:wmm_reborn_flutter/pages/home/cubit/home_cubit.dart';
+import 'package:wmm_reborn_flutter/pages/main/cubit/main_cubit.dart';
 
 class LoanListChildWidget extends StatelessWidget {
   final LoanModel loan;
@@ -48,7 +48,7 @@ class LoanListChildWidget extends StatelessWidget {
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     fontSize: 22,
-                    color: (context.cubit<HomeCubit>().state as HomeLoaded)
+                    color: (context.cubit<MainCubit>().state as MainLoaded)
                                 .user
                                 .username ==
                             loan.sender

@@ -1,26 +1,25 @@
-part of 'home_cubit.dart';
+part of 'main_cubit.dart';
 
-@immutable
-abstract class HomeState extends Equatable {
+abstract class MainState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class HomeInitial extends HomeState {}
+class MainInitial extends MainState {}
 
-class HomeLoaded extends HomeState {
+class MainLoaded extends MainState {
   final UserModel user;
 
-  HomeLoaded(this.user);
+  MainLoaded(this.user);
 
   @override
   List<Object> get props => [user];
 }
 
-class HomeError extends HomeState {
+class MainError extends MainState {
   final String error;
 
-  HomeError(this.error);
+  MainError(this.error);
 
   @override
   List<Object> get props => [error];

@@ -1,5 +1,6 @@
 class LoanModel {
   int _id;
+  String _title;
   String _sender;
   String _reciever;
   String _creator;
@@ -10,6 +11,7 @@ class LoanModel {
 
   LoanModel.fromJson(Map<String, dynamic> parsedJson) {
     _id = parsedJson['id'];
+    _title = parsedJson['title'];
     _sender = parsedJson['sender'];
     _reciever = parsedJson['reciever'];
     _creator = parsedJson['creator'];
@@ -22,6 +24,7 @@ class LoanModel {
   LoanModel();
 
   int get id => _id;
+  String get title => _title;
   String get sender => _sender;
   String get reciever => _reciever;
   String get creator => _creator;

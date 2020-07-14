@@ -9,15 +9,15 @@ import 'package:wmm_reborn_flutter/pages/create_loan/create_loan_page.dart';
 import 'package:wmm_reborn_flutter/pages/profile/profile_page.dart';
 import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
 
-import 'cubit/home_cubit.dart';
+import 'cubit/main_cubit.dart';
 import 'current_stats.dart';
 
-class HomePage extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _HomePageState();
+  State<StatefulWidget> createState() => _MainPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainPageState extends State<MainPage> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
 
@@ -42,8 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitProvider<HomeCubit>(
-      create: (context) => HomeCubit(
+    return CubitProvider<MainCubit>(
+      create: (context) => MainCubit(
         authCubit: context.cubit<AuthCubit>(),
         userRepository: context.read<UserRepository>(),
       ),
@@ -82,17 +82,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        body: CubitListener<HomeCubit, HomeState>(
+        body: CubitListener<MainCubit, MainState>(
           listener: (context, state) {
-            if (state is HomeError) {
+            if (state is MainError) {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(state.error),
               ));
             }
           },
-          child: CubitBuilder<HomeCubit, HomeState>(
+          child: CubitBuilder<MainCubit, MainState>(
             builder: (context, state) {
-              if (state is HomeLoaded) {
+              if (state is MainLoaded) {
                 return NestedScrollView(
                   controller: _scrollController,
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -121,20 +121,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ];
                   },
-                  body: RefreshIndicator(
-                    onRefresh: () => context.cubit<LoanCubit>().loadInitial(),
-                    child: CubitListener<LoanCubit, LoanState>(
-                      listener: (context, state) {
-                        if (state is LoanLoadingFailure) {
-                          Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text(state.error),
-                          ));
-                        }
-                      },
-                      child: CubitBuilder<LoanCubit, LoanState>(
-                        builder: (context, state) {
-                          if (state is LoanLoaded) {
-                            return ListView.builder(
+                  body: CubitListener<LoanCubit, LoanState>(
+                    listener: (context, state) {
+                      if (state is LoanLoadingFailure) {
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(state.error),
+                        ));
+                      }
+                    },
+                    child: CubitBuilder<LoanCubit, LoanState>(
+                      builder: (context, state) {
+                        if (state is LoanLoaded) {
+                          return RefreshIndicator(
+                            onRefresh: () =>
+                                context.cubit<LoanCubit>().loadInitial(),
+                            child: ListView.builder(
                               padding: EdgeInsets.all(10),
                               itemBuilder: (context, index) {
                                 return index >= state.loans.length
@@ -145,23 +146,39 @@ class _HomePageState extends State<HomePage> {
                               },
                               itemCount:
                                   state.loans.length + (state.hasMore ? 1 : 0),
-                            );
-                          }
+                            ),
+                          );
+                        }
 
-                          if (state is LoanLoadingFailure)
-                            return Center(
-                              child: Icon(Icons.error_outline, size: 50),
-                            );
+                        if (state is LoanLoadingFailure)
+                          return Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(Icons.error_outline, size: 50),
+                                FlatButton(
+                                  onPressed: () =>
+                                      context.cubit<LoanCubit>().loadInitial(),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Icon(Icons.refresh),
+                                      Text('Retry'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
 
-                          return Center(child: CircularProgressIndicator());
-                        },
-                      ),
+                        return Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ),
                 );
               }
 
-              if (state is HomeInitial)
+              if (state is MainInitial)
                 return Center(child: CircularProgressIndicator());
 
               return Center(child: const FlutterLogo());

@@ -56,11 +56,26 @@ class _Profile extends StatelessWidget {
             child: Card(
               margin: EdgeInsets.all(10),
               child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
+                padding: const EdgeInsets.all(20),
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(user.username),
+                    Icon(
+                      Icons.person,
+                      size: 35,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            user.username,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

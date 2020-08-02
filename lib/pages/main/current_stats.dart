@@ -11,33 +11,22 @@ class CurrentStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-      ),
       elevation: 2,
-      color: Theme.of(context).primaryColor,
-      child: Card(
-        elevation: 0,
-        margin: EdgeInsets.all(15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            _Stats(
-              title: 'You\'re owed',
-              amount: user.currentLent,
-              color: Colors.green,
-            ),
-            _Stats(
-              title: 'You owe',
-              amount: user.currentBorrowed,
-              color: Colors.red,
-            ),
-          ],
-        ),
+      margin: EdgeInsets.all(15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          _Stats(
+            title: 'You\'re owed',
+            amount: user.currentLent,
+            color: Colors.green,
+          ),
+          _Stats(
+            title: 'You owe',
+            amount: user.currentBorrowed,
+            color: Colors.red,
+          ),
+        ],
       ),
     );
   }

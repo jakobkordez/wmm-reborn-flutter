@@ -42,51 +42,58 @@ class _LoanTabState extends State<LoanTab> {
           ));
         }
       },
-      child: CubitBuilder<LoanCubit, LoanState>(
-        builder: (context, state) {
-          if (state is LoanLoaded) {
-            return RefreshIndicator(
-              onRefresh: () =>
-                  context.cubit<LoanCubit>().loadInitial(),
-              child: ListView.builder(
-                controller: _scrollController,
-                padding: EdgeInsets.all(10),
-                itemBuilder: (context, index) {
-                  return index >= state.loans.length
-                      ? Center(child: CircularProgressIndicator())
-                      : LoanListChildWidget(
-                          loan: state.loans[index],
-                        );
+      child: RefreshIndicator(
+        onRefresh: () => context.cubit<LoanCubit>().loadInitial(),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: CustomScrollView(
+            controller: _scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                  child: const Text(
+                'Loans',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),
+              )),
+              CubitBuilder<LoanCubit, LoanState>(
+                builder: (context, state) {
+                  if (state is LoanLoaded) {
+                    return SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return index >= state.loans.length
+                              ? Center(child: CircularProgressIndicator())
+                              : LoanListChildWidget(loan: state.loans[index]);
+                        },
+                        childCount:
+                            state.loans.length + (state.hasMore ? 1 : 0),
+                      ),
+                    );
+                  }
+
+                  if (state is LoanLoadingFailure)
+                    return SliverFillRemaining(
+                      child: Center(
+                          child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.error_outline, size: 50),
+                          Text('Something went wrong')
+                        ],
+                      )),
+                    );
+
+                  return SliverFillRemaining(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
                 },
-                itemCount:
-                    state.loans.length + (state.hasMore ? 1 : 0),
-              ),
-            );
-          }
-
-          if (state is LoanLoadingFailure)
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(Icons.error_outline, size: 50),
-                  FlatButton(
-                    onPressed: () =>
-                        context.cubit<LoanCubit>().loadInitial(),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(Icons.refresh),
-                        Text('Retry'),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
-
-          return Center(child: CircularProgressIndicator());
-        },
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

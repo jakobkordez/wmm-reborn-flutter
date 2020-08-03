@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
-import 'package:wmm_reborn_flutter/pages/main/tabs/friends_tab.dart';
-import 'package:wmm_reborn_flutter/pages/main/tabs/home_tab.dart';
-import 'package:wmm_reborn_flutter/pages/main/tabs/loans_tab.dart';
-import 'package:wmm_reborn_flutter/pages/profile/profile_page.dart';
-import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/pages/main/tabs/friends_tab.dart';
+import 'package:wmm_flutter/pages/main/tabs/home_tab.dart';
+import 'package:wmm_flutter/pages/main/tabs/loans_tab.dart';
+import 'package:wmm_flutter/pages/main/tabs/profile_tab.dart';
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 import 'cubit/main_cubit.dart';
 
@@ -24,27 +24,14 @@ class MainPage extends StatelessWidget {
         initialIndex: 0,
         child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search),
-            ),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfilePage(),
-                    )),
-                icon: Icon(Icons.person),
-              )
-            ],
+            title: const Text('Where\'s my money?'),
             bottom: TabBar(
               labelPadding: EdgeInsets.all(10),
               tabs: <Widget>[
                 Icon(Icons.home, size: 26),
                 Icon(Icons.import_export, size: 26),
                 Icon(Icons.people, size: 26),
-                Icon(Icons.settings, size: 26),
+                Icon(Icons.person, size: 26),
               ],
             ),
           ),
@@ -61,7 +48,7 @@ class MainPage extends StatelessWidget {
                 HomeTab(),
                 LoanTab(),
                 FriendsTab(),
-                Center(child: Text('Settings')),
+                ProfileTab(),
               ],
             ),
           ),

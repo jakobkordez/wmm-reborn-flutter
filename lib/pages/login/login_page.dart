@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
-import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 import 'cubit/login_cubit.dart';
 import 'login_form.dart';

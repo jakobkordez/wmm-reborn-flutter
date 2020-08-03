@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
-import 'package:wmm_reborn_flutter/models/loan.dart';
-import 'package:wmm_reborn_flutter/pages/main/cubit/main_cubit.dart';
+import 'flat_card.dart';
+import 'package:wmm_flutter/models/loan.dart';
+import 'package:wmm_flutter/pages/main/cubit/main_cubit.dart';
 
 class LoanListChildWidget extends StatelessWidget {
   final LoanModel loan;
@@ -12,10 +13,13 @@ class LoanListChildWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return FlatCard(
       child: Container(
         padding: EdgeInsets.all(20),
-        alignment: Alignment.center,
+        // decoration: BoxDecoration(
+        //   border: Border(bottom: BorderSide(width: 1, color: Colors.grey[400])),
+        //   color: Theme.of(context).cardColor,
+        // ),
         child: Row(
           children: <Widget>[
             Expanded(

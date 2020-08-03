@@ -1,4 +1,4 @@
-name: wmm_reborn_flutter
+name: wmm_flutter
 description: A platform for tracking loans between friends and colleagues.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

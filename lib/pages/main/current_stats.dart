@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:wmm_reborn_flutter/models/user.dart';
+import 'package:wmm_flutter/models/user.dart';
 
 class CurrentStats extends StatelessWidget {
   final UserModel user;

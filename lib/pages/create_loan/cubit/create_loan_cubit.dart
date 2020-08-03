@@ -2,8 +2,8 @@ import 'package:cubit/cubit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import 'package:wmm_reborn_flutter/models/loan.dart';
-import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
+import 'package:wmm_flutter/models/loan.dart';
+import 'package:wmm_flutter/repositories/loan_repository.dart';
 
 part 'create_loan_state.dart';
 

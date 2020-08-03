@@ -3,10 +3,10 @@ import 'package:meta/meta.dart';
 import 'package:cubit/cubit.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
-import 'package:wmm_reborn_flutter/models/user.dart';
-import 'package:wmm_reborn_flutter/repositories/base_repository.dart';
-import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/models/user.dart';
+import 'package:wmm_flutter/repositories/base_repository.dart';
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 part 'profile_state.dart';
 

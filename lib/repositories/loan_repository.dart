@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
-import 'package:wmm_reborn_flutter/models/loan.dart';
+import 'package:wmm_flutter/models/loan.dart';
 
 import 'base_repository.dart';
 
@@ -29,9 +29,10 @@ class LoanRepository {
 
   Future<void> create(LoanModel loan) async {
     Response res = await baseRepository.send('POST', baseUrl,
-      body: { 'user': loan.reciever, 'amount': loan.amount });
-    
-    if (res.statusCode == 400) throw ArgumentError(res.body.substring(1, res.body.length-1));
+        body: {'user': loan.reciever, 'amount': loan.amount});
+
+    if (res.statusCode == 400)
+      throw ArgumentError(res.body.substring(1, res.body.length - 1));
     if (res.statusCode != 200) throw Error();
   }
 }

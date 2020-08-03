@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
-import 'package:wmm_reborn_flutter/models/user.dart';
-import 'package:wmm_reborn_flutter/repositories/base_repository.dart';
-import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
+import 'package:wmm_flutter/models/user.dart';
+import 'package:wmm_flutter/repositories/base_repository.dart';
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 class FriendRepository {
   FriendRepository(this.baseRepository, this.userRepository);

@@ -3,9 +3,9 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
-import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
-import 'package:wmm_reborn_flutter/models/loan.dart';
-import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/models/loan.dart';
+import 'package:wmm_flutter/repositories/loan_repository.dart';
 
 part 'loan_state.dart';
 

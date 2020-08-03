@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
-import 'package:wmm_reborn_flutter/pages/main/cubit/main_cubit.dart';
+import 'package:wmm_flutter/pages/main/cubit/main_cubit.dart';
 import '../current_stats.dart';
 
 class HomeTab extends StatelessWidget {

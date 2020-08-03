@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
-import 'package:wmm_reborn_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/components/user_card.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
 
-import 'package:wmm_reborn_flutter/models/user.dart';
-import 'package:wmm_reborn_flutter/pages/profile/cubit/profile_cubit.dart';
-import 'package:wmm_reborn_flutter/repositories/user_repository.dart';
+import 'package:wmm_flutter/models/user.dart';
+import 'package:wmm_flutter/pages/profile/cubit/profile_cubit.dart';
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 class ProfilePage extends StatelessWidget {
   final String username;
@@ -53,33 +54,7 @@ class _Profile extends StatelessWidget {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: Card(
-              margin: EdgeInsets.all(10),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(
-                      Icons.person,
-                      size: 35,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            user.username,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: UserCard(user: user),
           ),
           SliverList(delegate: SliverChildListDelegate(<Widget>[])),
         ],

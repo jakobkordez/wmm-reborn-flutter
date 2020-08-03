@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
 
-import 'package:wmm_reborn_flutter/pages/create_loan/cubit/create_loan_cubit.dart';
-import 'package:wmm_reborn_flutter/pages/create_loan/total_amount.dart';
-import 'package:wmm_reborn_flutter/repositories/loan_repository.dart';
+import 'package:wmm_flutter/pages/create_loan/cubit/create_loan_cubit.dart';
+import 'package:wmm_flutter/pages/create_loan/total_amount.dart';
+import 'package:wmm_flutter/repositories/loan_repository.dart';
 
 class CreateLoanPage extends StatefulWidget {
   @override

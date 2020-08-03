@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
-import 'package:wmm_reborn_flutter/components/loan_list_child.dart';
-import 'package:wmm_reborn_flutter/cubit/loan_cubit.dart';
+import 'package:wmm_flutter/components/loan_list_child.dart';
+import 'package:wmm_flutter/cubit/loan_cubit.dart';
 
 class LoanTab extends StatefulWidget {
   @override
@@ -44,20 +44,21 @@ class _LoanTabState extends State<LoanTab> {
       },
       child: RefreshIndicator(
         onRefresh: () => context.cubit<LoanCubit>().loadInitial(),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
+        child: Container(
           child: CustomScrollView(
             controller: _scrollController,
             physics: AlwaysScrollableScrollPhysics(),
             slivers: <Widget>[
-              SliverToBoxAdapter(
-                  child: const Text(
-                'Loans',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                ),
-              )),
+              SliverAppBar(
+                title: const Text('Loans', style: TextStyle(fontSize: 18)),
+                backgroundColor: Colors.blue[400],
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {},
+                  )
+                ],
+              ),
               CubitBuilder<LoanCubit, LoanState>(
                 builder: (context, state) {
                   if (state is LoanLoaded) {

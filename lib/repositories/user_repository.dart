@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show Response;
 import 'package:meta/meta.dart';
 
-import 'package:wmm_reborn_flutter/models/user.dart';
+import 'package:wmm_flutter/models/user.dart';
 
 import 'base_repository.dart';
 

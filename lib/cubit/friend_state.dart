@@ -8,9 +8,10 @@ abstract class FriendState extends Equatable {
 class FriendInitial extends FriendState {}
 
 class FriendLoaded extends FriendState {
-  FriendLoaded(this.friends);
+  FriendLoaded(this.friends, this.requests);
 
   final List<UserModel> friends;
+  final List<UserModel> requests;
 
   @override
   List<Object> get props => [friends];

@@ -1,20 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
+
 import 'package:wmm_flutter/components/user_card.dart';
-import 'package:wmm_flutter/pages/main/cubit/main_cubit.dart';
+import 'package:wmm_flutter/cubit/auth_cubit.dart';
+import 'package:wmm_flutter/cubit/user_cubit.dart';
 
 class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.delayed(Duration(seconds: 1)),
-      child: CubitBuilder<MainCubit, MainState>(
-        builder: (context, state) {
-          if (state is MainLoaded) return UserCard(user: state.user);
+      onRefresh: () => context.cubit<UserCubit>().loadInitial(),
+      child: CustomScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        slivers: <Widget>[
+          CubitBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              if (state is UserLoaded)
+                return SliverToBoxAdapter(
+                  child: UserCard(user: state.user),
+                );
 
-          return Center(child: CircularProgressIndicator());
-        },
+              return SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()),
+              );
+            },
+          ),
+          SliverToBoxAdapter(
+            child: FlatButton(
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Logout?'),
+                  content: Text('Are you sure you want to logout?'),
+                  actions: [
+                    FlatButton(
+                      child: Text('Cancel'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                    FlatButton(
+                      child: Text('Logout'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        context.cubit<AuthCubit>().logout();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              padding: EdgeInsets.all(15),
+              textColor: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.exit_to_app),
+                  const Text('Logout'),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

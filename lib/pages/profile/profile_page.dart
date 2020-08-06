@@ -32,9 +32,7 @@ class ProfilePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
 
-            return Center(
-              child: Text("TEEEEEEEMPORARY"),
-            );
+            return Center(child: FlutterLogo());
           },
         ),
       ),
@@ -53,9 +51,7 @@ class _Profile extends StatelessWidget {
       onRefresh: () => context.cubit<ProfileCubit>().refresh(),
       child: CustomScrollView(
         slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: UserCard(user: user),
-          ),
+          SliverToBoxAdapter(child: UserCard(user: user)),
           SliverList(delegate: SliverChildListDelegate(<Widget>[])),
         ],
       ),

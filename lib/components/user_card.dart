@@ -18,7 +18,8 @@ class UserCard extends StatelessWidget {
           children: <Widget>[
             Icon(
               Icons.person,
-              size: 35,
+              size: 40,
+              color: Colors.grey,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
@@ -26,8 +27,12 @@ class UserCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
+                    user.name,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
                     user.username,
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),

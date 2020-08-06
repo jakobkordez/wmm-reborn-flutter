@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 import 'package:provider/provider.dart';
 
+import 'cubit/user_cubit.dart';
 import 'cubit/loan_cubit.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/friend_cubit.dart';
@@ -52,6 +53,12 @@ class App extends StatelessWidget {
           if (state is AuthSuccess) {
             return MultiCubitProvider(
               providers: [
+                CubitProvider<UserCubit>(
+                  create: (context) => UserCubit(
+                    authCubit: context.cubit<AuthCubit>(),
+                    userRepository: context.read<UserRepository>(),
+                  ),
+                ),
                 CubitProvider<LoanCubit>(
                   create: (context) => LoanCubit(
                     authCubit: context.cubit<AuthCubit>(),

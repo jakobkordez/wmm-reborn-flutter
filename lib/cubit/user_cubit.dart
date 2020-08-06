@@ -7,29 +7,27 @@ import 'package:wmm_flutter/models/user.dart';
 import 'package:wmm_flutter/repositories/base_repository.dart';
 import 'package:wmm_flutter/repositories/user_repository.dart';
 
-part 'main_state.dart';
+part 'user_state.dart';
 
-class MainCubit extends Cubit<MainState> {
-  MainCubit({
+class UserCubit extends Cubit<UserState> {
+  UserCubit({
     @required this.userRepository,
     @required this.authCubit,
-  }) : super(MainInitial()) {
-    _init();
+  }) : super(UserInitial()) {
+    loadInitial();
   }
 
   final UserRepository userRepository;
   final AuthCubit authCubit;
 
-  void _init() async {
-    emit(MainInitial());
-
+  Future<void> loadInitial() async {
     try {
       UserModel user = await userRepository.getUser(getNew: true);
-      emit(MainLoaded(user));
+      emit(UserLoaded(user));
     } on UnauthorizedError {
       authCubit.logout();
     } on Error {
-      emit(MainError('Something went wrong! Try again later.'));
+      emit(UserLoadingFailure('Something went wrong! Try again later.'));
     }
   }
 }

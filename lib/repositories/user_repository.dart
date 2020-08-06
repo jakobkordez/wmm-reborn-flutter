@@ -12,7 +12,7 @@ class UserRepository {
 
   final BaseRepository baseRepository;
 
-  String get baseUrl => '/users';
+  String get basePath => '/users';
 
   Map<String, UserModel> _cachedUsers = {};
 
@@ -20,7 +20,7 @@ class UserRepository {
       {@required String username, @required String password}) async {
     Response res = await baseRepository.send(
       'POST',
-      '$baseUrl/login',
+      '$basePath/login',
       identify: false,
       body: {'username': username, 'password': password},
     );
@@ -49,7 +49,7 @@ class UserRepository {
       return _cachedUsers[username];
 
     Response res =
-        await baseRepository.send('GET', '$baseUrl/profile/$username');
+        await baseRepository.send('GET', '$basePath/profile/$username');
 
     if (res.statusCode != 200) throw Error();
 

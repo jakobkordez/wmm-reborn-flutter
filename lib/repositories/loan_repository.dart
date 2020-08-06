@@ -10,7 +10,7 @@ class LoanRepository {
 
   final BaseRepository baseRepository;
 
-  String get baseUrl => '/loans';
+  String get basePath => '/loans';
 
   Future<List<LoanModel>> getAll({int count = 20, int start}) async {
     final params = <String>[];
@@ -18,7 +18,7 @@ class LoanRepository {
     if (start != null) params.add('start=$start');
 
     Response res =
-        await baseRepository.send('GET', '$baseUrl?${params.join('&')}');
+        await baseRepository.send('GET', '$basePath?${params.join('&')}');
 
     if (res.statusCode != 200) throw Error();
 
@@ -28,7 +28,7 @@ class LoanRepository {
   }
 
   Future<void> create(LoanModel loan) async {
-    Response res = await baseRepository.send('POST', baseUrl,
+    Response res = await baseRepository.send('POST', basePath,
         body: {'user': loan.reciever, 'amount': loan.amount});
 
     if (res.statusCode == 400)

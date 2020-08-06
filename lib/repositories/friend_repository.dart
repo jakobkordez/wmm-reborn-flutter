@@ -11,10 +11,10 @@ class FriendRepository {
   final BaseRepository baseRepository;
   final UserRepository userRepository;
 
-  String get baseUrl => '/friends';
+  String get basePath => '/friends';
 
   Future<List<UserModel>> getFriends() async {
-    Response res = await baseRepository.send('GET', baseUrl);
+    Response res = await baseRepository.send('GET', basePath);
 
     if (res.statusCode != 200) throw Error();
 
@@ -25,7 +25,7 @@ class FriendRepository {
   }
 
   Future<List<UserModel>> getRequests() async {
-    Response res = await baseRepository.send('GET', '$baseUrl/requests');
+    Response res = await baseRepository.send('GET', '$basePath/requests');
 
     if (res.statusCode != 200) throw Error();
 
@@ -36,14 +36,14 @@ class FriendRepository {
   }
 
   Future<void> addFriend(String username) async {
-    Response res = await baseRepository.send('GET', '$baseUrl/add/$username');
+    Response res = await baseRepository.send('GET', '$basePath/add/$username');
 
     if (res.statusCode != 200) throw Error();
   }
 
   Future<void> removeFriend(String username) async {
     Response res =
-        await baseRepository.send('GET', '$baseUrl/remove/$username');
+        await baseRepository.send('GET', '$basePath/remove/$username');
 
     if (res.statusCode != 200) throw Error();
   }

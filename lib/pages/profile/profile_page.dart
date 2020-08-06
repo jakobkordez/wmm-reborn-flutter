@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:wmm_flutter/components/user_card.dart';
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
@@ -16,14 +16,14 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CubitProvider<ProfileCubit>(
+    return BlocProvider<ProfileCubit>(
       create: (context) => ProfileCubit(
-          authCubit: context.cubit<AuthCubit>(),
+          authCubit: context.bloc<AuthCubit>(),
           userRepository: context.read<UserRepository>(),
           username: username),
       child: Scaffold(
         appBar: AppBar(),
-        body: CubitBuilder<ProfileCubit, ProfileState>(
+        body: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             if (state is ProfileLoaded) return _Profile(user: state.user);
 
@@ -48,7 +48,7 @@ class _Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => context.cubit<ProfileCubit>().refresh(),
+      onRefresh: () => context.bloc<ProfileCubit>().refresh(),
       child: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(child: UserCard(user: user)),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:wmm_flutter/cubit/friend_cubit.dart';
 import 'package:wmm_flutter/pages/add_friend/add_friend_page.dart';
@@ -8,7 +8,7 @@ import 'package:wmm_flutter/pages/add_friend/add_friend_page.dart';
 class FriendsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CubitListener<FriendCubit, FriendState>(
+    return BlocListener<FriendCubit, FriendState>(
       listener: (context, state) {
         if (state is FriendLoadingFailure)
           Scaffold.of(context).showSnackBar(SnackBar(
@@ -16,7 +16,7 @@ class FriendsTab extends StatelessWidget {
           ));
       },
       child: RefreshIndicator(
-        onRefresh: () => context.cubit<FriendCubit>().loadInitial(),
+        onRefresh: () => context.bloc<FriendCubit>().loadInitial(),
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -36,7 +36,7 @@ class FriendsTab extends StatelessWidget {
                 ),
               ],
             ),
-            CubitBuilder<FriendCubit, FriendState>(
+            BlocBuilder<FriendCubit, FriendState>(
               builder: (context, state) {
                 if (state is FriendLoaded)
                   return SliverList(

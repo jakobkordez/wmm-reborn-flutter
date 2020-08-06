@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
@@ -16,9 +16,9 @@ class LoginPage extends StatelessWidget {
         title: const Text("Login"),
       ),
       body: Center(
-        child: CubitProvider<LoginCubit>(
+        child: BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(
-            authCubit: context.cubit<AuthCubit>(),
+            authCubit: context.bloc<AuthCubit>(),
             userRepository: context.read<UserRepository>(),
           ),
           child: LoginForm(),

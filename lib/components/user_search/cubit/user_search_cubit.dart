@@ -1,4 +1,4 @@
-import 'package:cubit/cubit.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wmm_flutter/cubit/auth_cubit.dart';

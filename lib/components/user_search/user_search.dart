@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/components/user_search/cubit/user_search_cubit.dart';
@@ -13,12 +13,12 @@ import 'package:wmm_flutter/repositories/user_repository.dart';
 class UserSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CubitProvider<UserSearchCubit>(
+    return BlocProvider<UserSearchCubit>(
       create: (context) => UserSearchCubit(
-        authCubit: context.cubit<AuthCubit>(),
+        authCubit: context.bloc<AuthCubit>(),
         userRepository: context.read<UserRepository>(),
       ),
-      child: CubitListener<UserSearchCubit, UserSearchState>(
+      child: BlocListener<UserSearchCubit, UserSearchState>(
         listener: (context, state) {
           if (state is UserSearchFailure)
             Scaffold.of(context).showSnackBar(SnackBar(
@@ -28,7 +28,7 @@ class UserSearch extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: _SearchInput()),
-            CubitBuilder<UserSearchCubit, UserSearchState>(
+            BlocBuilder<UserSearchCubit, UserSearchState>(
               builder: (context, state) {
                 if (state is UserSearchFound)
                   return SliverList(
@@ -91,7 +91,7 @@ class _SearchInputState extends State<_SearchInput> {
         if (value.length < 3) return;
         _debounce = Timer(
           Duration(milliseconds: 500),
-          () => context.cubit<UserSearchCubit>().search(value),
+          () => context.bloc<UserSearchCubit>().search(value),
         );
       },
       decoration: InputDecoration(

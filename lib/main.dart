@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'cubit/user_cubit.dart';
@@ -32,7 +32,7 @@ void main() {
           ),
         ),
       ],
-      child: CubitProvider<AuthCubit>(
+      child: BlocProvider<AuthCubit>(
         create: (context) => AuthCubit(
           baseRepository: context.read<BaseRepository>(),
           userRepository: context.read<UserRepository>(),
@@ -48,26 +48,26 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Where\'s my money?',
-      home: CubitBuilder<AuthCubit, AuthState>(
+      home: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is AuthSuccess) {
-            return MultiCubitProvider(
+            return MultiBlocProvider(
               providers: [
-                CubitProvider<UserCubit>(
+                BlocProvider<UserCubit>(
                   create: (context) => UserCubit(
-                    authCubit: context.cubit<AuthCubit>(),
+                    authCubit: context.bloc<AuthCubit>(),
                     userRepository: context.read<UserRepository>(),
                   ),
                 ),
-                CubitProvider<LoanCubit>(
+                BlocProvider<LoanCubit>(
                   create: (context) => LoanCubit(
-                    authCubit: context.cubit<AuthCubit>(),
+                    authCubit: context.bloc<AuthCubit>(),
                     loanRepository: context.read<LoanRepository>(),
                   ),
                 ),
-                CubitProvider<FriendCubit>(
+                BlocProvider<FriendCubit>(
                   create: (context) => FriendCubit(
-                    authCubit: context.cubit<AuthCubit>(),
+                    authCubit: context.bloc<AuthCubit>(),
                     friendRepository: context.read<FriendRepository>(),
                   ),
                 ),

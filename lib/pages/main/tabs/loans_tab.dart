@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wmm_flutter/components/loan_list_tile.dart';
 import 'package:wmm_flutter/cubit/loan_cubit.dart';
 import 'package:wmm_flutter/pages/create_loan/create_loan_page.dart';
@@ -24,7 +24,7 @@ class _LoanTabState extends State<LoanTab> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold)
-      context.cubit<LoanCubit>().loadMore();
+      context.bloc<LoanCubit>().loadMore();
   }
 
   @override
@@ -35,7 +35,7 @@ class _LoanTabState extends State<LoanTab> {
 
   @override
   Widget build(BuildContext context) {
-    return CubitListener<LoanCubit, LoanState>(
+    return BlocListener<LoanCubit, LoanState>(
       listener: (context, state) {
         if (state is LoanLoadingFailure) {
           Scaffold.of(context).showSnackBar(SnackBar(
@@ -44,7 +44,7 @@ class _LoanTabState extends State<LoanTab> {
         }
       },
       child: RefreshIndicator(
-        onRefresh: () => context.cubit<LoanCubit>().loadInitial(),
+        onRefresh: () => context.bloc<LoanCubit>().loadInitial(),
         child: CustomScrollView(
           controller: _scrollController,
           physics: AlwaysScrollableScrollPhysics(),
@@ -66,7 +66,7 @@ class _LoanTabState extends State<LoanTab> {
                 ),
               ],
             ),
-            CubitBuilder<LoanCubit, LoanState>(
+            BlocBuilder<LoanCubit, LoanState>(
               builder: (context, state) {
                 if (state is LoanLoaded) {
                   return SliverList(
@@ -105,7 +105,7 @@ class _LoanTabState extends State<LoanTab> {
                 style: TextStyle(color: Colors.grey[700]),
                 child: Container(
                   color: Colors.grey[300],
-                  child: CubitBuilder<LoanCubit, LoanState>(
+                  child: BlocBuilder<LoanCubit, LoanState>(
                     builder: (context, state) {
                       if (state is LoanLoaded) {
                         if (state.loans.length == 0)

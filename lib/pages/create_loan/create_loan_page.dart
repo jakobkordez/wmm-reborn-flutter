@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/pages/create_loan/cubit/create_loan_cubit.dart';
@@ -15,7 +15,7 @@ class CreateLoanPage extends StatefulWidget {
 class _CreateLoanPageState extends State<CreateLoanPage> {
   @override
   Widget build(BuildContext context) {
-    return CubitProvider<CreateLoanCubit>(
+    return BlocProvider<CreateLoanCubit>(
       create: (context) => CreateLoanCubit(
         loanRepository: context.read<LoanRepository>(),
       ),
@@ -32,13 +32,13 @@ class _CreateLoanForm extends StatelessWidget {
         title: const Text("New loan"),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.cubit<CreateLoanCubit>().createLoans(),
+        onPressed: () => context.bloc<CreateLoanCubit>().createLoans(),
         child: Icon(Icons.check),
       ),
       body: Form(
         child: Padding(
           padding: EdgeInsets.all(15),
-          child: CubitBuilder<CreateLoanCubit, CreateLoanState>(
+          child: BlocBuilder<CreateLoanCubit, CreateLoanState>(
             builder: (context, state) {
               return CustomScrollView(
                 slivers: <Widget>[
@@ -53,7 +53,7 @@ class _CreateLoanForm extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: FlatButton(
                       onPressed: () =>
-                          context.cubit<CreateLoanCubit>().addLoan(),
+                          context.bloc<CreateLoanCubit>().addLoan(),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:wmm_flutter/cubit/user_cubit.dart';
 import 'package:wmm_flutter/pages/main/tabs/friends_tab.dart';
@@ -26,7 +26,7 @@ class MainPage extends StatelessWidget {
             ],
           ),
         ),
-        body: CubitListener<UserCubit, UserState>(
+        body: BlocListener<UserCubit, UserState>(
           listener: (context, state) {
             if (state is UserLoadingFailure) {
               Scaffold.of(context).showSnackBar(SnackBar(

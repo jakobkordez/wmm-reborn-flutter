@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/login_cubit.dart';
 
@@ -15,12 +15,12 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     _onLoginButtonPressed() {
-      context.cubit<LoginCubit>().loginButtonPressed(
+      context.bloc<LoginCubit>().loginButtonPressed(
           username: _usernameController.text,
           password: _passwordController.text);
     }
 
-    return CubitListener<LoginCubit, LoginState>(
+    return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
           Scaffold.of(context).showSnackBar(
@@ -31,7 +31,7 @@ class _LoginFormState extends State<LoginForm> {
           );
         }
       },
-      child: CubitBuilder<LoginCubit, LoginState>(
+      child: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
           if (state is LoginInProgress) {
             return CircularProgressIndicator();

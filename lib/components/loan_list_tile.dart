@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'flat_card.dart';
 import 'package:wmm_flutter/models/loan.dart';
@@ -16,7 +16,7 @@ class LoanListTile extends StatelessWidget {
     return ListTile(
       title: Text(loan.title ?? 'Loan'),
       subtitle: Text(
-          (context.cubit<UserCubit>().state as UserLoaded).user.username ==
+          (context.bloc<UserCubit>().state as UserLoaded).user.username ==
                   loan.sender
               ? loan.reciever
               : loan.sender),
@@ -25,12 +25,11 @@ class LoanListTile extends StatelessWidget {
         textAlign: TextAlign.end,
         style: TextStyle(
             fontSize: 22,
-            color: (context.cubit<UserCubit>().state as UserLoaded)
-                        .user
-                        .username ==
-                    loan.sender
-                ? Colors.green
-                : Colors.red),
+            color:
+                (context.bloc<UserCubit>().state as UserLoaded).user.username ==
+                        loan.sender
+                    ? Colors.green
+                    : Colors.red),
       ),
     );
 
@@ -74,7 +73,7 @@ class LoanListTile extends StatelessWidget {
                 textAlign: TextAlign.end,
                 style: TextStyle(
                     fontSize: 22,
-                    color: (context.cubit<UserCubit>().state as UserLoaded)
+                    color: (context.bloc<UserCubit>().state as UserLoaded)
                                 .user
                                 .username ==
                             loan.sender

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_cubit/flutter_cubit.dart';
 
 import 'package:wmm_flutter/cubit/friend_cubit.dart';
+import 'package:wmm_flutter/pages/add_friend/add_friend_page.dart';
 
 class FriendsTab extends StatelessWidget {
   @override
@@ -27,8 +28,11 @@ class FriendsTab extends StatelessWidget {
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {},
+                  icon: Icon(Icons.person_add),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddFriendPage()),
+                  ),
                 ),
               ],
             ),

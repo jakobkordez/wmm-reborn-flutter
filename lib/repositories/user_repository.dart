@@ -37,7 +37,7 @@ class UserRepository {
   Future<void> logout() async {
     try {
       final refreshToken = await baseRepository.getToken();
-      await baseRepository.send('DELETE', '$baseUrl/token',
+      await baseRepository.send('DELETE', '$basePath/token',
           body: {'refresh_token': refreshToken});
     } finally {
       await baseRepository.deleteToken();
@@ -58,5 +58,15 @@ class UserRepository {
     if (username == '') _cachedUsers[''] = user;
 
     return user;
+  }
+
+  Future<List<UserModel>> searchUsers(String phrase) async {
+    Response res = await baseRepository.send('GET', '$basePath/search/$phrase');
+
+    if (res.statusCode != 200) throw Error();
+
+    final usernames = json.decode(res.body) as List<dynamic>;
+
+    return Future.wait(usernames.map((e) => getUser(username: e)));
   }
 }

@@ -20,68 +20,102 @@ class _LoginFormState extends State<LoginForm> {
           password: _passwordController.text);
     }
 
-    return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
-        if (state is LoginFailure) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error),
-              backgroundColor: Colors.red,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Text(
+              'Login',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w300),
             ),
-          );
-        }
-      },
-      child: BlocBuilder<LoginCubit, LoginState>(
-        builder: (context, state) {
-          if (state is LoginInProgress) {
-            return CircularProgressIndicator();
-          }
+            BlocListener<LoginCubit, LoginState>(
+              listener: (context, state) {
+                if (state is LoginFailure) {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
+              child: BlocBuilder<LoginCubit, LoginState>(
+                builder: (context, state) {
+                  if (state is LoginInProgress) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-          return Form(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(),
-                        labelText: "Username"),
-                    controller: _usernameController,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.vpn_key),
-                        border: OutlineInputBorder(),
-                        labelText: "Password"),
-                    controller: _passwordController,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).unfocus();
-                      if (_usernameController.text.isNotEmpty &&
-                          _passwordController.text.isNotEmpty)
-                        _onLoginButtonPressed();
-                    },
-                    obscureText: true,
-                  ),
-                  FlatButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    disabledColor: Colors.grey,
-                    disabledTextColor: Colors.black,
-                    padding: EdgeInsets.all(8.0),
-                    splashColor: Colors.blueAccent,
-                    onPressed: () => _onLoginButtonPressed(),
-                    child: const Text("Login"),
-                  ),
-                ],
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Form(
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(0),
+                                prefixIcon: Icon(Icons.person),
+                                labelText: "Username"),
+                            controller: _usernameController,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (_) =>
+                                FocusScope.of(context).nextFocus(),
+                          ),
+                          Container(height: 10),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(0),
+                                prefixIcon: Icon(Icons.vpn_key),
+                                labelText: "Password"),
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context).unfocus();
+                              if (_usernameController.text.isNotEmpty &&
+                                  _passwordController.text.isNotEmpty)
+                                _onLoginButtonPressed();
+                            },
+                            obscureText: true,
+                          ),
+                          Container(height: 10),
+                          FlatButton(
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                            disabledColor: Colors.grey,
+                            disabledTextColor: Colors.black,
+                            padding: EdgeInsets.all(8.0),
+                            splashColor: Colors.blueAccent,
+                            onPressed: () => _onLoginButtonPressed(),
+                            child: const Text("Login"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-          );
-        },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Don\'t have an account yet? '),
+                GestureDetector(
+                  onTap: () => DefaultTabController.of(context).index = 1,
+                  child: Text(
+                    'Register here',
+                    style: TextStyle(
+                      color: Colors.blue[700],
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

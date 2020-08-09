@@ -21,8 +21,6 @@ dependencies:
   flutter_bloc: ^6.0.1
   formz: ^0.3.0
 
-  provider: ^4.2.0
-
   flutter_secure_storage: ^3.3.3
 
 

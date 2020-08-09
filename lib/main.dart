@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'cubit/user_cubit.dart';
 import 'cubit/loan_cubit.dart';
@@ -16,26 +15,30 @@ import 'repositories/friend_repository.dart';
 
 void main() {
   runApp(
-    MultiProvider(
+    MultiRepositoryProvider(
       providers: [
-        Provider<BaseRepository>(create: (context) => BaseRepository()),
-        Provider<UserRepository>(
-          create: (context) => UserRepository(context.read<BaseRepository>()),
+        RepositoryProvider<BaseRepository>(
+          create: (context) => BaseRepository(),
         ),
-        Provider<LoanRepository>(
-          create: (context) => LoanRepository(context.read<BaseRepository>()),
+        RepositoryProvider<UserRepository>(
+          create: (context) =>
+              UserRepository(context.repository<BaseRepository>()),
         ),
-        Provider<FriendRepository>(
+        RepositoryProvider<LoanRepository>(
+          create: (context) =>
+              LoanRepository(context.repository<BaseRepository>()),
+        ),
+        RepositoryProvider<FriendRepository>(
           create: (context) => FriendRepository(
-            context.read<BaseRepository>(),
-            context.read<UserRepository>(),
+            context.repository<BaseRepository>(),
+            context.repository<UserRepository>(),
           ),
         ),
       ],
       child: BlocProvider<AuthCubit>(
         create: (context) => AuthCubit(
-          baseRepository: context.read<BaseRepository>(),
-          userRepository: context.read<UserRepository>(),
+          baseRepository: context.repository<BaseRepository>(),
+          userRepository: context.repository<UserRepository>(),
         ),
         child: App(),
       ),
@@ -56,19 +59,19 @@ class App extends StatelessWidget {
                 BlocProvider<UserCubit>(
                   create: (context) => UserCubit(
                     authCubit: context.bloc<AuthCubit>(),
-                    userRepository: context.read<UserRepository>(),
+                    userRepository: context.repository<UserRepository>(),
                   ),
                 ),
                 BlocProvider<LoanCubit>(
                   create: (context) => LoanCubit(
                     authCubit: context.bloc<AuthCubit>(),
-                    loanRepository: context.read<LoanRepository>(),
+                    loanRepository: context.repository<LoanRepository>(),
                   ),
                 ),
                 BlocProvider<FriendCubit>(
                   create: (context) => FriendCubit(
                     authCubit: context.bloc<AuthCubit>(),
-                    friendRepository: context.read<FriendRepository>(),
+                    friendRepository: context.repository<FriendRepository>(),
                   ),
                 ),
               ],

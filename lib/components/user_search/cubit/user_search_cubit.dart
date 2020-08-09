@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
 import 'package:wmm_flutter/models/user.dart';
 import 'package:wmm_flutter/repositories/base_repository.dart';

@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+
 import 'package:wmm_flutter/components/user_card.dart';
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
-
 import 'package:wmm_flutter/models/user.dart';
 import 'package:wmm_flutter/pages/profile/cubit/profile_cubit.dart';
 import 'package:wmm_flutter/repositories/user_repository.dart';
@@ -19,7 +18,7 @@ class ProfilePage extends StatelessWidget {
     return BlocProvider<ProfileCubit>(
       create: (context) => ProfileCubit(
           authCubit: context.bloc<AuthCubit>(),
-          userRepository: context.read<UserRepository>(),
+          userRepository: context.repository<UserRepository>(),
           username: username),
       child: Scaffold(
         appBar: AppBar(),

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/components/user_search/cubit/user_search_cubit.dart';
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
@@ -16,7 +15,7 @@ class UserSearch extends StatelessWidget {
     return BlocProvider<UserSearchCubit>(
       create: (context) => UserSearchCubit(
         authCubit: context.bloc<AuthCubit>(),
-        userRepository: context.read<UserRepository>(),
+        userRepository: context.repository<UserRepository>(),
       ),
       child: BlocListener<UserSearchCubit, UserSearchState>(
         listener: (context, state) {

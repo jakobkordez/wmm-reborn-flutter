@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/repositories/user_repository.dart';
 
@@ -14,7 +13,7 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<RegisterCubit>(
       create: (context) => RegisterCubit(
-        userRepository: context.read<UserRepository>(),
+        userRepository: context.repository<UserRepository>(),
       ),
       child: SingleChildScrollView(
         child: Padding(

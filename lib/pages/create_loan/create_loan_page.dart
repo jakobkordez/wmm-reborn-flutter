@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/pages/create_loan/cubit/create_loan_cubit.dart';
 import 'package:wmm_flutter/pages/create_loan/total_amount.dart';
@@ -17,7 +16,7 @@ class _CreateLoanPageState extends State<CreateLoanPage> {
   Widget build(BuildContext context) {
     return BlocProvider<CreateLoanCubit>(
       create: (context) => CreateLoanCubit(
-        loanRepository: context.read<LoanRepository>(),
+        loanRepository: context.repository<LoanRepository>(),
       ),
       child: _CreateLoanForm(),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
 import 'package:wmm_flutter/pages/login/register_form.dart';
@@ -21,7 +20,7 @@ class LoginPage extends StatelessWidget {
         child: BlocProvider<LoginCubit>(
           create: (context) => LoginCubit(
             authCubit: context.bloc<AuthCubit>(),
-            userRepository: context.read<UserRepository>(),
+            userRepository: context.repository<UserRepository>(),
           ),
           child: TabBarView(
             physics: NeverScrollableScrollPhysics(),

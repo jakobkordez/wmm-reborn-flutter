@@ -16,8 +16,10 @@ class UserRepository {
 
   Map<String, UserModel> _cachedUsers = {};
 
-  Future<bool> login(
-      {@required String username, @required String password}) async {
+  Future<void> login({
+    @required String username,
+    @required String password,
+  }) async {
     Response res = await baseRepository.send(
       'POST',
       '$basePath/login',
@@ -25,13 +27,30 @@ class UserRepository {
       body: {'username': username, 'password': password},
     );
 
-    if (res.statusCode == 400) return false;
-
-    if (res.statusCode != 200) throw Error();
+    if (res.statusCode != 200) throw (json.decode(res.body));
 
     await baseRepository.persistToken(json.decode(res.body)['refresh_token']);
+  }
 
-    return true;
+  Future<void> register({
+    @required String username,
+    @required String name,
+    @required String password,
+    @required String email,
+  }) async {
+    Response res = await baseRepository.send(
+      'POST',
+      '$basePath/register',
+      identify: false,
+      body: {
+        'username': username,
+        'password': password,
+        'name': name,
+        'email': email,
+      },
+    );
+
+    if (res.statusCode != 201) throw (json.decode(res.body));
   }
 
   Future<void> logout() async {

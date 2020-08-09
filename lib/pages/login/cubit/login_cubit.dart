@@ -16,20 +16,18 @@ class LoginCubit extends Cubit<LoginState> {
   final UserRepository userRepository;
   final AuthCubit authCubit;
 
-  void loginButtonPressed({
+  Future<void> login({
     @required String username,
     @required String password,
   }) async {
     emit(LoginInProgress());
 
     try {
-      if (await userRepository.login(username: username, password: password)) {
-        authCubit.login();
-        emit(LoginInitial());
-      } else
-        emit(LoginFailure('Invalid username or password'));
-    } on Error {
-      emit(LoginFailure('Something went wrong! Try again later.'));
+      await userRepository.login(username: username, password: password);
+      authCubit.login();
+      emit(LoginInitial());
+    } catch (e) {
+      emit(LoginFailure(e.toString()));
     }
   }
 }

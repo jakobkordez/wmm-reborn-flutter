@@ -16,7 +16,4 @@ class LoginFailure extends LoginState {
 
   @override
   List<Object> get props => [error];
-
-  @override
-  String toString() => 'LoginFailure: { error: $error }';
 }

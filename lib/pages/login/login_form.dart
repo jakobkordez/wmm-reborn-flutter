@@ -12,14 +12,15 @@ class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  _onLoginButtonPressed() {
+    context.bloc<LoginCubit>().login(
+          username: _usernameController.text,
+          password: _passwordController.text,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
-    _onLoginButtonPressed() {
-      context.bloc<LoginCubit>().loginButtonPressed(
-          username: _usernameController.text,
-          password: _passwordController.text);
-    }
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -33,10 +34,7 @@ class _LoginFormState extends State<LoginForm> {
               listener: (context, state) {
                 if (state is LoginFailure) {
                   Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.error),
-                      backgroundColor: Colors.red,
-                    ),
+                    SnackBar(content: Text(state.error)),
                   );
                 }
               },

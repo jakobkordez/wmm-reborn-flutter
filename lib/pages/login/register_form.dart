@@ -1,37 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:provider/provider.dart';
+
+import 'package:wmm_flutter/repositories/user_repository.dart';
 
 import 'cubit/register_cubit.dart';
+import 'input_field.dart';
 
-class RegisterForm extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => RegisterFormState();
-}
-
-class RegisterFormState extends State<RegisterForm> {
-  Map<String, TextEditingController> _controllers = Map();
-
-  @override
-  void initState() {
-    super.initState();
-    _controllers['username'] = TextEditingController();
-    _controllers['password'] = TextEditingController();
-    _controllers['repeat_pass'] = TextEditingController();
-    _controllers['email'] = TextEditingController();
-    _controllers['name'] = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controllers.forEach((key, value) => value.dispose());
-    super.dispose();
-  }
-
+class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RegisterCubit>(
-      create: (context) => RegisterCubit(),
+      create: (context) => RegisterCubit(
+        userRepository: context.read<UserRepository>(),
+      ),
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -42,75 +26,106 @@ class RegisterFormState extends State<RegisterForm> {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w300),
               ),
               BlocListener<RegisterCubit, RegisterState>(
+                listenWhen: (previous, current) =>
+                    previous.status != current.status,
                 listener: (context, state) {
-                  // TODO: implement listener
+                  if (state.status.isSubmissionFailure) {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Failed to register'),
+                    ));
+                  } else if (state.status.isSubmissionSuccess) {
+                    DefaultTabController.of(context).index = 0;
+                  }
                 },
                 child: BlocBuilder<RegisterCubit, RegisterState>(
                   builder: (context, state) {
-                    // TODO: implement states
+                    if (state.status == FormzStatus.submissionInProgress)
+                      return Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: CircularProgressIndicator(),
+                      );
+
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: Form(
                         child: Column(
                           children: <Widget>[
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: "Username"),
-                              controller: _controllers['username'],
+                            InputField(
+                              prefixIcon: Icon(Icons.person),
+                              labelText: "Username",
+                              errorText:
+                                  state.username.pure || state.username.valid
+                                      ? null
+                                      : 'Invalid username',
                               textInputAction: TextInputAction.next,
+                              onChanged: (value) => context
+                                  .bloc<RegisterCubit>()
+                                  .onUsernameChanged(value),
                               onFieldSubmitted: (_) =>
                                   FocusScope.of(context).nextFocus(),
                             ),
-                            Container(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  prefixIcon: Icon(Icons.person),
-                                  labelText: "Name"),
-                              controller: _controllers['name'],
+                            InputField(
+                              prefixIcon: Icon(Icons.person),
+                              labelText: "Name",
+                              errorText: state.name.pure || state.name.valid
+                                  ? null
+                                  : 'Invalid name',
                               textInputAction: TextInputAction.next,
+                              onChanged: (value) => context
+                                  .bloc<RegisterCubit>()
+                                  .onNameChanged(value),
                               onFieldSubmitted: (_) =>
                                   FocusScope.of(context).nextFocus(),
                             ),
-                            Container(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  prefixIcon: Icon(Icons.mail),
-                                  labelText: "Email"),
-                              controller: _controllers['email'],
+                            InputField(
+                              keyboardType: TextInputType.emailAddress,
+                              prefixIcon: Icon(Icons.mail),
+                              labelText: "Email",
+                              errorText: state.email.pure || state.email.valid
+                                  ? null
+                                  : 'Invalid email',
                               textInputAction: TextInputAction.next,
+                              onChanged: (value) => context
+                                  .bloc<RegisterCubit>()
+                                  .onEmailChanged(value),
                               onFieldSubmitted: (_) =>
                                   FocusScope.of(context).nextFocus(),
                             ),
-                            Container(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  prefixIcon: Icon(Icons.vpn_key),
-                                  labelText: "Password"),
-                              controller: _controllers['password'],
+                            InputField(
+                              keyboardType: TextInputType.visiblePassword,
+                              prefixIcon: Icon(Icons.vpn_key),
+                              labelText: "Password",
+                              errorText:
+                                  state.password.pure || state.password.valid
+                                      ? null
+                                      : 'Invalid password',
                               textInputAction: TextInputAction.next,
+                              onChanged: (value) => context
+                                  .bloc<RegisterCubit>()
+                                  .onPasswordChanged(value),
                               onFieldSubmitted: (_) =>
                                   FocusScope.of(context).nextFocus(),
                               obscureText: true,
                             ),
-                            Container(height: 10),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(0),
-                                  prefixIcon: Icon(Icons.vpn_key),
-                                  labelText: "Repeat Password"),
-                              controller: _controllers['rePassword'],
+                            InputField(
+                              keyboardType: TextInputType.visiblePassword,
+                              prefixIcon: Icon(Icons.vpn_key),
+                              labelText: "Repeat Password",
+                              errorText: state.rePassword.pure ||
+                                      state.password.value ==
+                                          state.rePassword.value
+                                  ? null
+                                  : 'Passwords don\'t match',
                               textInputAction: TextInputAction.done,
+                              onChanged: (value) => context
+                                  .bloc<RegisterCubit>()
+                                  .onRepeatPasswordChanged(value),
                               onFieldSubmitted: (_) {
                                 FocusScope.of(context).unfocus();
+                                context.bloc<RegisterCubit>().register();
                               },
                               obscureText: true,
                             ),
-                            Container(height: 10),
                             FlatButton(
                               color: Colors.blue,
                               textColor: Colors.white,
@@ -118,7 +133,8 @@ class RegisterFormState extends State<RegisterForm> {
                               disabledTextColor: Colors.black,
                               padding: EdgeInsets.all(8.0),
                               splashColor: Colors.blueAccent,
-                              onPressed: () {},
+                              onPressed: () =>
+                                  context.bloc<RegisterCubit>().register(),
                               child: const Text("Register"),
                             ),
                           ],
@@ -133,7 +149,10 @@ class RegisterFormState extends State<RegisterForm> {
                 children: [
                   Text('Already have an account? '),
                   GestureDetector(
-                    onTap: () => DefaultTabController.of(context).index = 0,
+                    onTap: () {
+                      DefaultTabController.of(context).index = 0;
+                      FocusScope.of(context).unfocus();
+                    },
                     child: Text(
                       'Login here',
                       style: TextStyle(

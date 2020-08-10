@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wmm_flutter/components/loan_list_tile.dart';
+
+import 'package:wmm_flutter/components/loan_tile.dart';
 import 'package:wmm_flutter/cubit/loan_cubit.dart';
 import 'package:wmm_flutter/pages/create_loan/create_loan_page.dart';
 
@@ -74,7 +75,7 @@ class _LoanTabState extends State<LoanTab> {
                       (context, index) {
                         return index >= state.loans.length
                             ? Center(child: CircularProgressIndicator())
-                            : LoanListTile(loan: state.loans[index]);
+                            : LoanTile(loan: state.loans[index]);
                       },
                       childCount: state.loans.length + (state.hasMore ? 1 : 0),
                     ),
@@ -103,20 +104,17 @@ class _LoanTabState extends State<LoanTab> {
               hasScrollBody: false,
               child: DefaultTextStyle(
                 style: TextStyle(color: Colors.grey[700]),
-                child: Container(
-                  color: Colors.grey[300],
-                  child: BlocBuilder<LoanCubit, LoanState>(
-                    builder: (context, state) {
-                      if (state is LoanLoaded) {
-                        if (state.loans.length == 0)
-                          return Center(child: Text('No loans yet.'));
+                child: BlocBuilder<LoanCubit, LoanState>(
+                  builder: (context, state) {
+                    if (state is LoanLoaded) {
+                      if (state.loans.length == 0)
+                        return Center(child: Text('No loans yet.'));
 
-                        return Center(child: Text('No more loans.'));
-                      }
+                      return Center(child: Text('No more loans.'));
+                    }
 
-                      return Container(width: 0, height: 0);
-                    },
-                  ),
+                    return Container(width: 0, height: 0);
+                  },
                 ),
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wmm_flutter/components/user_tile.dart';
 
 import 'package:wmm_flutter/cubit/friend_cubit.dart';
 import 'package:wmm_flutter/pages/add_friend/add_friend_page.dart';
@@ -41,13 +42,7 @@ class FriendsTab extends StatelessWidget {
                 if (state is FriendLoaded)
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return ListTile(
-                          leading: Icon(Icons.person),
-                          title: Text(state.friends[index].name),
-                          subtitle: Text(state.friends[index].username),
-                        );
-                      },
+                      (context, index) => UserTile(user: state.friends[index]),
                       childCount: state.friends.length,
                     ),
                   );

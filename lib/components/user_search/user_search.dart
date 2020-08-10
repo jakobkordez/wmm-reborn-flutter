@@ -5,8 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:wmm_flutter/components/user_search/cubit/user_search_cubit.dart';
+import 'package:wmm_flutter/components/user_tile.dart';
 import 'package:wmm_flutter/cubit/auth_cubit.dart';
-import 'package:wmm_flutter/pages/profile/profile_page.dart';
 import 'package:wmm_flutter/repositories/user_repository.dart';
 
 class UserSearch extends StatelessWidget {
@@ -32,18 +32,7 @@ class UserSearch extends StatelessWidget {
                 if (state is UserSearchFound)
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) => ListTile(
-                        title: Text(state.users[index].name),
-                        subtitle: Text(state.users[index].username),
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfilePage(
-                              username: state.users[index].username,
-                            ),
-                          ),
-                        ),
-                      ),
+                      (context, index) => UserTile(user: state.users[index]),
                       childCount: state.users.length,
                     ),
                   );
@@ -103,7 +92,7 @@ class _SearchInputState extends State<_SearchInput> {
           ),
           onTap: () => _controller.clear(),
         ),
-        fillColor: Colors.grey[200],
+        fillColor: Colors.grey[100],
         filled: true,
       ),
     );

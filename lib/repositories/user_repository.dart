@@ -58,6 +58,8 @@ class UserRepository {
       final refreshToken = await baseRepository.getToken();
       await baseRepository.send('DELETE', '$basePath/token',
           body: {'refresh_token': refreshToken});
+    } catch (e) {
+      print(e.toString());
     } finally {
       await baseRepository.deleteToken();
     }

@@ -71,6 +71,7 @@ class BaseRepository {
   }
 
   Future<void> deleteToken() {
+    _accessToken = null;
     return _storage.delete(key: 'refresh_token');
   }
 }

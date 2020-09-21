@@ -44,6 +44,8 @@ class CreateLoanForm extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: FloatingActionButton(
+                      backgroundColor:
+                          state.status.isValidated ? null : Colors.grey,
                       onPressed: state.status.isValidated
                           ? () => context.bloc<CreateLoanCubit>().submit()
                           : null,

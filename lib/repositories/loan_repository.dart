@@ -28,6 +28,14 @@ class LoanRepository {
     return lList.map((e) => LoanModel.fromJson(e)).toList();
   }
 
+  Future<LoanModel> getId(int id) async {
+    Response res = await baseRepository.send('GET', '$basePath/id/$id');
+
+    if (res.statusCode != 200) throw (res.body);
+
+    return LoanModel.fromJson(json.decode(res.body));
+  }
+
   Future<void> create(NewLoan loan) async {
     Response res = await baseRepository.send('POST', basePath, body: {
       'title': loan.title,

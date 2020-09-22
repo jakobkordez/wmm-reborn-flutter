@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class InputField extends StatelessWidget {
   final String labelText, errorText;
   final Icon prefixIcon;
-  final void Function(String) onChanged, onFieldSubmitted;
+  final void Function(String value) onChanged, onFieldSubmitted;
   final TextInputAction textInputAction;
   final bool obscureText;
   final TextInputType keyboardType;

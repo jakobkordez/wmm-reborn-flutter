@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' show Response;
 import 'package:wmm_flutter/models/loan.dart';
+import 'package:wmm_flutter/models/new_loan.dart';
 
 import 'base_repository.dart';
 
@@ -27,12 +28,15 @@ class LoanRepository {
     return lList.map((e) => LoanModel.fromJson(e)).toList();
   }
 
-  Future<void> create(LoanModel loan) async {
-    Response res = await baseRepository.send('POST', basePath,
-        body: {'user': loan.reciever, 'amount': loan.amount});
+  Future<void> create(NewLoan loan) async {
+    Response res = await baseRepository.send('POST', basePath, body: {
+      'title': loan.title,
+      'user': loan.user,
+      'amount': loan.amount,
+    });
 
     if (res.statusCode == 400)
       throw ArgumentError(res.body.substring(1, res.body.length - 1));
-    if (res.statusCode != 200) throw Error();
+    if (res.statusCode != 201) throw Error();
   }
 }

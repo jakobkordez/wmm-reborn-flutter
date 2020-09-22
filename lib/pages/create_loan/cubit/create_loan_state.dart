@@ -1,28 +1,32 @@
 part of 'create_loan_cubit.dart';
 
-abstract class CreateLoanState extends Equatable {
+class CreateLoanState extends Equatable {
+  final String title;
+  final User user;
+  final Amount amount;
+  final FormzStatus status;
+
+  const CreateLoanState({
+    this.title = '',
+    this.user = const User.pure(),
+    this.amount = const Amount.pure(),
+    this.status = FormzStatus.pure,
+  });
+
+  CreateLoanState copyWith({
+    String title,
+    User user,
+    Amount amount,
+    FormzStatus status,
+  }) {
+    return CreateLoanState(
+      title: title ?? this.title,
+      user: user ?? this.user,
+      amount: amount ?? this.amount,
+      status: status ?? this.status,
+    );
+  }
+
   @override
-  List<Object> get props => [];
-}
-
-class CreateLoanInitial extends CreateLoanState {
-  final List<LoanModel> loans;
-
-  CreateLoanInitial({this.loans = const <LoanModel>[]});
-
-  @override
-  List<Object> get props => [loans];
-}
-
-class CreateLoanInProgress extends CreateLoanState {}
-
-class CreateLoanSuccess extends CreateLoanState {}
-
-class CreateLoanFailure extends CreateLoanState {
-  final String error;
-
-  CreateLoanFailure(this.error);
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [title, user, amount, status];
 }

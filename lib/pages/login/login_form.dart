@@ -1,24 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 import 'cubit/login_cubit.dart';
+import 'input_field.dart';
 
-class LoginForm extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  _onLoginButtonPressed() {
-    context.bloc<LoginCubit>().login(
-          username: _usernameController.text,
-          password: _passwordController.text,
-        );
-  }
-
+class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -31,16 +18,18 @@ class _LoginFormState extends State<LoginForm> {
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.w300),
             ),
             BlocListener<LoginCubit, LoginState>(
+              listenWhen: (previous, current) =>
+                  previous.status != current.status,
               listener: (context, state) {
-                if (state is LoginFailure) {
+                if (state.status.isSubmissionFailure) {
                   Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text(state.error)),
+                    SnackBar(content: const Text('Failed to login')),
                   );
                 }
               },
               child: BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
-                  if (state is LoginInProgress) {
+                  if (state.status.isSubmissionInProgress) {
                     return Padding(
                       padding: const EdgeInsets.all(20),
                       child: CircularProgressIndicator(),
@@ -52,41 +41,16 @@ class _LoginFormState extends State<LoginForm> {
                     child: Form(
                       child: Column(
                         children: <Widget>[
-                          TextFormField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(0),
-                                prefixIcon: Icon(Icons.person),
-                                labelText: "Username"),
-                            controller: _usernameController,
-                            textInputAction: TextInputAction.next,
-                            onFieldSubmitted: (_) =>
-                                FocusScope.of(context).nextFocus(),
-                          ),
-                          Container(height: 10),
-                          TextFormField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(0),
-                                prefixIcon: Icon(Icons.vpn_key),
-                                labelText: "Password"),
-                            controller: _passwordController,
-                            textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context).unfocus();
-                              if (_usernameController.text.isNotEmpty &&
-                                  _passwordController.text.isNotEmpty)
-                                _onLoginButtonPressed();
-                            },
-                            obscureText: true,
-                          ),
-                          Container(height: 10),
+                          _UsernameInput(),
+                          _PasswordInput(),
                           FlatButton(
                             color: Colors.blue,
                             textColor: Colors.white,
                             disabledColor: Colors.grey,
                             disabledTextColor: Colors.black,
-                            padding: EdgeInsets.all(8.0),
                             splashColor: Colors.blueAccent,
-                            onPressed: () => _onLoginButtonPressed(),
+                            onPressed: () =>
+                                context.bloc<LoginCubit>().submit(),
                             child: const Text("Login"),
                           ),
                         ],
@@ -99,7 +63,7 @@ class _LoginFormState extends State<LoginForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Don\'t have an account yet? '),
+                const Text('Don\'t have an account yet? '),
                 GestureDetector(
                   onTap: () => DefaultTabController.of(context).index = 1,
                   child: Text(
@@ -115,6 +79,48 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _UsernameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      buildWhen: (previous, current) => previous.username != current.username,
+      builder: (context, state) {
+        return InputField(
+          key: const Key('loginForm_username'),
+          prefixIcon: const Icon(Icons.person),
+          labelText: 'Username',
+          textInputAction: TextInputAction.next,
+          onChanged: (value) => context.bloc<LoginCubit>().setUsername(value),
+          onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
+        );
+      },
+    );
+  }
+}
+
+class _PasswordInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      buildWhen: (previous, current) => previous.password != current.password,
+      builder: (context, state) {
+        return InputField(
+          key: const Key('loginForm_password'),
+          prefixIcon: const Icon(Icons.vpn_key),
+          labelText: 'Password',
+          textInputAction: TextInputAction.done,
+          onChanged: (value) => context.bloc<LoginCubit>().setPassword(value),
+          onFieldSubmitted: (_) {
+            FocusScope.of(context).unfocus();
+            if (state.status.isValid) context.bloc<LoginCubit>().submit();
+          },
+          obscureText: true,
+        );
+      },
     );
   }
 }

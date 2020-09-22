@@ -1,8 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:formz/formz.dart';
 import 'package:meta/meta.dart';
 
-import 'package:wmm_flutter/models/loan.dart';
+import 'package:wmm_flutter/models/new_loan.dart';
+import 'package:wmm_flutter/models/user.dart';
+import 'package:wmm_flutter/pages/create_loan/models/models.dart';
 import 'package:wmm_flutter/repositories/loan_repository.dart';
 
 part 'create_loan_state.dart';
@@ -10,51 +14,47 @@ part 'create_loan_state.dart';
 class CreateLoanCubit extends Cubit<CreateLoanState> {
   CreateLoanCubit({
     @required this.loanRepository,
-  }) : super(CreateLoanInitial());
+  }) : super(const CreateLoanState());
 
   final LoanRepository loanRepository;
 
-  void createLoans() {
-    if (state is CreateLoanInitial) {
-      final loans = List<LoanModel>.from((state as CreateLoanInitial).loans);
+  Future<void> submit() async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
 
-      emit(CreateLoanInProgress());
+    try {
+      final newLoan = NewLoan(
+        title: state.title,
+        user: state.user.value.username,
+        amount: double.parse(state.amount.value),
+      );
 
-      List<LoanModel> failed = List<LoanModel>();
-      for (int i = 0; i < loans.length; ++i) {
-        if (loans[i].amount == 0) continue;
-        try {
-          loanRepository.create(loans[i]);
-        } on ArgumentError {
-          failed.add(loans[i]);
-        } on Error {
-          failed.addAll(loans.sublist(i));
-          break;
-        }
-      }
-
-      if (failed.isEmpty)
-        emit(CreateLoanSuccess());
-      else {
-        emit(CreateLoanFailure('Something went wrong! Try again later'));
-        emit(CreateLoanInitial(loans: failed));
-      }
+      await loanRepository.create(newLoan);
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } catch (e) {
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
   }
 
-  void addLoan() {
-    if (state is CreateLoanInitial) {
-      final loans = List<LoanModel>.from((state as CreateLoanInitial).loans)
-        ..add(LoanModel());
-      emit(CreateLoanInitial(loans: loans));
-    }
+  Future<void> setTitle(String title) async {
+    emit(state.copyWith(
+      title: title,
+      status: Formz.validate([state.amount, state.user]),
+    ));
   }
 
-  void removeLoan(int index) {
-    if (state is CreateLoanInitial) {
-      final loans = List<LoanModel>.from((state as CreateLoanInitial).loans)
-        ..removeAt(index);
-      emit(CreateLoanInitial(loans: loans));
-    }
+  Future<void> setUser(UserModel user) async {
+    final userf = User.dirty(user);
+    emit(state.copyWith(
+      user: userf,
+      status: Formz.validate([userf, state.amount]),
+    ));
+  }
+
+  Future<void> setAmount(String amount) async {
+    final amountf = Amount.dirty(amount);
+    emit(state.copyWith(
+      amount: amountf,
+      status: Formz.validate([amountf, state.user]),
+    ));
   }
 }

@@ -6,6 +6,7 @@ import 'package:wmm_flutter/pages/login/register_form.dart';
 import 'package:wmm_flutter/repositories/user_repository.dart';
 
 import 'cubit/login_cubit.dart';
+import 'cubit/register_cubit.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
@@ -26,7 +27,12 @@ class LoginPage extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             children: [
               LoginForm(),
-              RegisterForm(),
+              BlocProvider<RegisterCubit>(
+                create: (context) => RegisterCubit(
+                  userRepository: context.repository<UserRepository>(),
+                ),
+                child: RegisterForm(),
+              ),
             ],
           ),
         ),

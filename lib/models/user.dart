@@ -1,24 +1,27 @@
 class UserModel {
-  String _username;
-  String _name;
-  double _totalLent;
-  double _totalBorrowed;
-  double _currentLent;
-  double _currentBorrowed;
+  final String username;
+  final String name;
+  final double totalLent;
+  final double totalBorrowed;
+  final double currentLent;
+  final double currentBorrowed;
 
-  UserModel.fromJson(Map<String, dynamic> parsedJson) {
-    _username = parsedJson['username'];
-    _name = parsedJson['name'];
-    _totalLent = parsedJson['total_lent'].toDouble();
-    _totalBorrowed = parsedJson['total_borrowed'].toDouble();
-    _currentLent = parsedJson['current_lent'].toDouble();
-    _currentBorrowed = parsedJson['current_borrowed'].toDouble();
-  }
+  const UserModel._({
+    this.username,
+    this.name,
+    this.totalLent,
+    this.totalBorrowed,
+    this.currentLent,
+    this.currentBorrowed,
+  });
 
-  String get username => _username;
-  String get name => _name;
-  double get totalLent => _totalLent;
-  double get totalBorrowed => _totalBorrowed;
-  double get currentLent => _currentLent;
-  double get currentBorrowed => _currentBorrowed;
+  UserModel.fromJson(Map<String, dynamic> parsedJson)
+      : username = parsedJson['username'],
+        name = parsedJson['name'],
+        totalLent = parsedJson['total_lent'].toDouble(),
+        totalBorrowed = parsedJson['total_borrowed'].toDouble(),
+        currentLent = parsedJson['current_lent'].toDouble(),
+        currentBorrowed = parsedJson['current_borrowed'].toDouble();
+
+  static const UserModel empty = UserModel._();
 }

@@ -55,11 +55,11 @@ class _LoanTabState extends State<LoanTab> {
               backgroundColor: Colors.blue[400],
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {},
+                  icon: const Icon(Icons.search),
+                  onPressed: null,
                 ),
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CreateLoanPage()),
@@ -89,8 +89,8 @@ class _LoanTabState extends State<LoanTab> {
                         child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Icon(Icons.error_outline, size: 50),
-                        Text('Something went wrong')
+                        const Icon(Icons.error_outline, size: 50),
+                        const Text('Something went wrong')
                       ],
                     )),
                   );
@@ -108,9 +108,21 @@ class _LoanTabState extends State<LoanTab> {
                   builder: (context, state) {
                     if (state is LoanLoaded) {
                       if (state.loans.length == 0)
-                        return Center(child: Text('No loans yet.'));
+                        return Padding(
+                          padding: const EdgeInsets.all(40),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: const Text('No loans yet.'),
+                          ),
+                        );
 
-                      return Center(child: Text('No more loans.'));
+                      return Padding(
+                        padding: const EdgeInsets.all(40),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: const Text('No more loans.'),
+                        ),
+                      );
                     }
 
                     return Container(width: 0, height: 0);

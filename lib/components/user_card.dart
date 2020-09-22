@@ -19,7 +19,7 @@ class UserCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.person,
                   size: 40,
                   color: Colors.grey,

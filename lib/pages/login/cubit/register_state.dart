@@ -1,27 +1,27 @@
 part of 'register_cubit.dart';
 
 class RegisterState extends Equatable {
-  final NameInput name;
-  final UsernameInput username;
-  final PasswordInput password, rePassword;
-  final EmailInput email;
+  final Name name;
+  final Username username;
+  final Password password, rePassword;
+  final Email email;
   final FormzStatus status;
 
   const RegisterState({
-    this.name = const NameInput.pure(),
-    this.username = const UsernameInput.pure(),
-    this.password = const PasswordInput.pure(),
-    this.rePassword = const PasswordInput.pure(),
-    this.email = const EmailInput.pure(),
+    this.name = const Name.pure(),
+    this.username = const Username.pure(),
+    this.password = const Password.pure(),
+    this.rePassword = const Password.pure(),
+    this.email = const Email.pure(),
     this.status = FormzStatus.pure,
   });
 
   RegisterState copyWith({
-    NameInput name,
-    UsernameInput username,
-    PasswordInput password,
-    PasswordInput rePassword,
-    EmailInput email,
+    Name name,
+    Username username,
+    Password password,
+    Password rePassword,
+    Email email,
     FormzStatus status,
   }) {
     return RegisterState(

@@ -35,11 +35,33 @@ void main() {
           ),
         ),
       ],
-      child: BlocProvider<AuthCubit>(
-        create: (context) => AuthCubit(
-          baseRepository: context.repository<BaseRepository>(),
-          userRepository: context.repository<UserRepository>(),
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>(
+            create: (context) => AuthCubit(
+              baseRepository: context.repository<BaseRepository>(),
+              userRepository: context.repository<UserRepository>(),
+            ),
+          ),
+          BlocProvider<UserCubit>(
+            create: (context) => UserCubit(
+              authCubit: context.bloc<AuthCubit>(),
+              userRepository: context.repository<UserRepository>(),
+            ),
+          ),
+          BlocProvider<LoanCubit>(
+            create: (context) => LoanCubit(
+              authCubit: context.bloc<AuthCubit>(),
+              loanRepository: context.repository<LoanRepository>(),
+            ),
+          ),
+          BlocProvider<FriendCubit>(
+            create: (context) => FriendCubit(
+              authCubit: context.bloc<AuthCubit>(),
+              friendRepository: context.repository<FriendRepository>(),
+            ),
+          ),
+        ],
         child: App(),
       ),
     ),
@@ -54,29 +76,10 @@ class App extends StatelessWidget {
       home: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is AuthSuccess) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider<UserCubit>(
-                  create: (context) => UserCubit(
-                    authCubit: context.bloc<AuthCubit>(),
-                    userRepository: context.repository<UserRepository>(),
-                  ),
-                ),
-                BlocProvider<LoanCubit>(
-                  create: (context) => LoanCubit(
-                    authCubit: context.bloc<AuthCubit>(),
-                    loanRepository: context.repository<LoanRepository>(),
-                  ),
-                ),
-                BlocProvider<FriendCubit>(
-                  create: (context) => FriendCubit(
-                    authCubit: context.bloc<AuthCubit>(),
-                    friendRepository: context.repository<FriendRepository>(),
-                  ),
-                ),
-              ],
-              child: MainPage(),
-            );
+            context.bloc<UserCubit>().loadInitial();
+            context.bloc<LoanCubit>().loadInitial();
+            context.bloc<FriendCubit>().loadInitial();
+            return MainPage();
           }
 
           if (state is AuthFailure) {

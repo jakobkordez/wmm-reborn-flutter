@@ -31,15 +31,15 @@ class ProfileTab extends StatelessWidget {
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Logout?'),
-                  content: Text('Are you sure you want to logout?'),
+                  title: const Text('Logout?'),
+                  content: const Text('Are you sure you want to logout?'),
                   actions: [
                     FlatButton(
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     FlatButton(
-                      child: Text('Logout'),
+                      child: const Text('Logout'),
                       onPressed: () {
                         Navigator.of(context).pop();
                         context.bloc<AuthCubit>().logout();
@@ -53,7 +53,7 @@ class ProfileTab extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.exit_to_app),
+                  const Icon(Icons.exit_to_app),
                   const Text('Logout'),
                 ],
               ),

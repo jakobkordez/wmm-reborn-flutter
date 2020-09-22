@@ -84,9 +84,9 @@ class _SearchInputState extends State<_SearchInput> {
       },
       decoration: InputDecoration(
         hintText: 'Search user',
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search),
         suffixIcon: GestureDetector(
-          child: Icon(
+          child: const Icon(
             Icons.cancel,
             color: Colors.grey,
           ),

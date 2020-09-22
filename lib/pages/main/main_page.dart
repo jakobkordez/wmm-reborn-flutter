@@ -19,10 +19,10 @@ class MainPage extends StatelessWidget {
           bottom: TabBar(
             labelPadding: EdgeInsets.all(10),
             tabs: <Widget>[
-              Icon(Icons.home, size: 26),
-              Icon(Icons.import_export, size: 26),
-              Icon(Icons.people, size: 26),
-              Icon(Icons.person, size: 26),
+              const Icon(Icons.home, size: 26),
+              const Icon(Icons.import_export, size: 26),
+              const Icon(Icons.people, size: 26),
+              const Icon(Icons.person, size: 26),
             ],
           ),
         ),
